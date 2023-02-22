@@ -8,8 +8,10 @@ module.exports = {
 			colors: {
 				orange: '#dfb175',
 				blue: '#0de7f8',
+				black: '#0c101b',
 				'transparent-black': 'rgba(19, 25, 28, 0.8)',
-				white: '#ffffff'
+				white: '#ffffff',
+				'off-white': '#F9F6ED'
 			},
 			// Background images.
 			backgroundImage: {

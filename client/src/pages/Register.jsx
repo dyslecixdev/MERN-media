@@ -1,8 +1,9 @@
 // LOGIN PAGE
 
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import {Link} from 'react-router-dom';
 
+import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -18,9 +19,18 @@ import Typography from '@mui/material/Typography';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import Logo from '../assets/logo-text.png';
+import DarkLogo from '../assets/logo-text-dark.png';
+import LightLogo from '../assets/logo-text-light.png';
+
+import {tokens} from '../theme';
+import {ColorModeContext} from '../theme';
 
 function Register() {
+	const theme = useTheme();
+	const {mode} = theme.palette;
+	const colors = tokens(mode);
+	const colorMode = useContext(ColorModeContext);
+
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -32,19 +42,19 @@ function Register() {
 
 	return (
 		<Container class='min-h-[100vh] flex justify-center items-center font-source'>
-			{/* LOGIN BOX */}
+			{/* REGISTER BOX */}
 			<Box class='w-full md:w-[80%] lg:w-[50%] flex rounded-md min-h-[600px] overflow-hidden'>
 				{/* LEFT SIDE OF BOX */}
 				<Box class='flex-1 p-4 md:border-t-2 md:border-l-2 md:border-b-2 flex flex-col items-center'>
 					{/* LOGO */}
 					<Box
 						component='img'
-						src={Logo}
+						src={mode === 'dark' ? DarkLogo : LightLogo}
 						alt='logo'
 						class='h-[150px] w-[200px] object-cover'
 					></Box>
 
-					{/* LOGIN FORM */}
+					{/* REGISTER FORM */}
 					<Paper component='form' class='flex flex-col bg-transparent gap-[30px]'>
 						{/* USERNAME INPUT */}
 						<TextField label='Username' variant='filled' color='secondary' />
@@ -96,7 +106,7 @@ function Register() {
 							/>
 						</FormControl>
 
-						{/* LOGIN BUTTON */}
+						{/* REGISTER BUTTON */}
 						<Button variant='contained' type='submit' color='secondary'>
 							Register
 						</Button>
