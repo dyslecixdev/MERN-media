@@ -6,13 +6,15 @@ module.exports = {
 		extend: {
 			// Color palette.
 			colors: {
+				orange: '#dfb175',
 				blue: '#0de7f8',
 				'transparent-black': 'rgba(19, 25, 28, 0.8)',
 				white: '#ffffff'
 			},
 			// Background images.
 			backgroundImage: {
-				'login-crowd': "url('./assets/login-crowd.jpg')"
+				'login-crowd': "url('./assets/login-crowd.jpg')",
+				'register-crowd': "url('./assets/register-crowd.jpg')"
 			},
 			// Fonts.
 			fontFamily: {

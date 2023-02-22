@@ -3,6 +3,7 @@ import {Routes, Route} from 'react-router-dom';
 import {ThemeProvider, CssBaseline, Box} from '@mui/material';
 
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 import {ColorModeContext, useMode} from './theme';
 
@@ -19,6 +20,7 @@ function App() {
 				<Box>
 					<Routes>
 						<Route path='/login' element={<Login />} />
+						<Route path='/register' element={<Register />} />
 					</Routes>
 				</Box>
 			</ThemeProvider>

@@ -33,7 +33,7 @@ function Login() {
 				{/* LEFT SIDE OF BOX */}
 				<Box class='bg-login-crowd flex-1 bg-cover p-5 md:flex hidden'>
 					{/* TEXT */}
-					<Box class='h-fit flex flex-col justify-center gap-[30px] bg-transparent-black text-white rounded-sm p-4'>
+					<Box class='h-fit flex flex-col justify-center gap-[30px] bg-transparent-black text-white rounded-md p-4'>
 						<Typography class='text-5xl'>Hello World</Typography>
 						<Typography class='font-playfair'>
 							Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt temporibus
