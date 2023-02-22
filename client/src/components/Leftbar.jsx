@@ -1,4 +1,5 @@
-import {useContext} from 'react';
+// LEFTBAR
+
 import {Link} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
@@ -14,9 +15,6 @@ import Typography from '@mui/material/Typography';
 import ModeOutlinedIcon from '@mui/icons-material/ModeOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
-
-import {tokens} from '../theme';
-import {ColorModeContext} from '../theme';
 
 // Fake user data.
 const user = {
@@ -39,68 +37,70 @@ const comments = 3;
 function Leftbar() {
 	const theme = useTheme();
 	const {mode} = theme.palette;
-	const colors = tokens(mode);
-	const colorMode = useContext(ColorModeContext);
 
 	return (
-		<Box
-			class={`h-full w-full flex-2 rounded-md flex flex-col items-center pt-4 px-8 ${
-				mode === 'dark'
-					? 'bg-gradient-to-br from-black via-black to-blue'
-					: 'bg-gradient-to-br from-white via-white to-blue'
-			}`}
-		>
-			{/* TOP HALF OF LEFTBAR */}
-			<Box class='flex flex-col gap-[20px] items-center mb-4'>
-				{/* USER AVATAR */}
-				<Avatar
-					alt={user.username}
-					src={user.profilePic || user.username[0]}
-					sx={{height: '100px', width: '100px'}}
-				/>
+		<Box class='h-full w-full py-8 flex-2'>
+			<Box
+				class={`h-content w-full rounded-md flex flex-col items-center pt-4 px-8 ${
+					mode === 'dark'
+						? 'bg-gradient-to-br from-black via-black to-blue'
+						: 'bg-gradient-to-br from-white via-white to-blue'
+				}`}
+			>
+				{/* TOP HALF OF LEFTBAR */}
+				<Box class='flex flex-col gap-[20px] items-center mb-4'>
+					{/* USER AVATAR */}
+					<Avatar
+						alt={user.username}
+						src={user.profilePic || user.username[0]}
+						sx={{height: '100px', width: '100px'}}
+					/>
 
-				{/* USERNAME */}
-				<Typography
-					component={Link}
-					to={`/profile/${user.id}`}
-					class='font-playfair text-2xl hover:text-blue transition-colors ease-out'
-				>
-					{user.username}
-				</Typography>
+					{/* USERNAME */}
+					<Typography
+						component={Link}
+						to={`/profile/${user.id}`}
+						class='font-playfair text-2xl hover:text-blue transition-colors ease-out'
+					>
+						{user.username}
+					</Typography>
 
-				{/* USER DESCRIPTION */}
-				<Typography class='text-sm'>{user.desc}</Typography>
-			</Box>
+					{/* USER DESCRIPTION */}
+					<Typography class='text-sm'>{user.desc}</Typography>
+				</Box>
 
-			<Divider variant='middle' class='w-full' />
+				{/* bug Divider disappears when toggling between dark and light mode */}
+				<Divider variant='middle' class='w-full'>
+					____________________________________
+				</Divider>
+				{/* BOTTOM HALF OF LEFTBAR */}
+				<Box>
+					<List>
+						{/* USER POSTS */}
+						<ListItem>
+							<ListItemIcon>
+								<ModeOutlinedIcon />
+							</ListItemIcon>
+							<ListItemText primary='Posts' secondary={posts} />
+						</ListItem>
 
-			{/* BOTTOM HALF OF LEFTBAR */}
-			<Box>
-				<List>
-					{/* USER POSTS */}
-					<ListItem>
-						<ListItemIcon>
-							<ModeOutlinedIcon />
-						</ListItemIcon>
-						<ListItemText primary='Posts' secondary={posts} />
-					</ListItem>
+						{/* USER LIKES */}
+						<ListItem>
+							<ListItemIcon>
+								<FavoriteBorderOutlinedIcon />
+							</ListItemIcon>
+							<ListItemText primary='Likes' secondary={likes} />
+						</ListItem>
 
-					{/* USER LIKES */}
-					<ListItem>
-						<ListItemIcon>
-							<FavoriteBorderOutlinedIcon />
-						</ListItemIcon>
-						<ListItemText primary='Likes' secondary={likes} />
-					</ListItem>
-
-					{/* USER COMMENTS */}
-					<ListItem>
-						<ListItemIcon>
-							<MessageOutlinedIcon />
-						</ListItemIcon>
-						<ListItemText primary='Comments' secondary={comments} />
-					</ListItem>
-				</List>
+						{/* USER COMMENTS */}
+						<ListItem>
+							<ListItemIcon>
+								<MessageOutlinedIcon />
+							</ListItemIcon>
+							<ListItemText primary='Comments' secondary={comments} />
+						</ListItem>
+					</List>
+				</Box>
 			</Box>
 		</Box>
 	);

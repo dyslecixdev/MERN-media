@@ -21,8 +21,7 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
-import DarkLogo from '../assets/logo-dark.png';
-import LightLogo from '../assets/logo-light.png';
+import Logo from '../assets/logo.png';
 
 import {tokens} from '../theme';
 import {ColorModeContext} from '../theme';
@@ -38,7 +37,6 @@ const user = {
 function Navbar() {
 	const theme = useTheme();
 	const {mode} = theme.palette;
-	const colors = tokens(mode);
 	const colorMode = useContext(ColorModeContext);
 
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -67,7 +65,7 @@ function Navbar() {
 					<Box component={Link} to='/'>
 						<Box
 							component='img'
-							src={mode === 'dark' ? DarkLogo : LightLogo}
+							src={Logo}
 							alt='logo'
 							class='h-[9.5vh] w-fit object-cover'
 						/>

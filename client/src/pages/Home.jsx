@@ -18,7 +18,7 @@ function Home() {
 
 	return (
 		<Box
-			class={`min-h-[90vh] w-full flex gap-[100px] font-source px-12 py-8 ${
+			class={`min-h-[90vh] w-full flex gap-[100px] font-source pl-12 ${
 				mode === 'dark' ? '' : 'bg-off-white'
 			}`}
 		>

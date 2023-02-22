@@ -1,6 +1,6 @@
 // LOGIN PAGE
 
-import {useState, useContext} from 'react';
+import {useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
@@ -20,16 +20,11 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import DarkLogo from '../assets/logo-text-dark.png';
-import LightLogo from '../assets/logo-text-light.png';
-
-import {tokens} from '../theme';
-import {ColorModeContext} from '../theme';
+import LightLogo from '../assets/logo-text-white.png';
 
 function Login() {
 	const theme = useTheme();
 	const {mode} = theme.palette;
-	const colors = tokens(mode);
-	const colorMode = useContext(ColorModeContext);
 
 	const [showPassword, setShowPassword] = useState(false);
 
