@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SearchIcon from '@mui/icons-material/Search';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
@@ -101,12 +101,16 @@ function Navbar() {
 
 					{/* CHAT ICON */}
 					<IconButton>
-						<MessageOutlinedIcon />
+						<ChatBubbleOutlineOutlinedIcon />
 					</IconButton>
 
 					{/* USER AVATAR */}
 					<IconButton onClick={handleMenuOpen}>
-						<Avatar alt={user.username} src={user.profilePic || user.username[0]} />
+						<Avatar
+							alt={user.username}
+							src={user.profilePic || user.username[0]}
+							sx={{border: mode === 'dark' ? '2px solid white' : '2px solid black'}}
+						/>
 					</IconButton>
 
 					{/* AVATAR MENU */}

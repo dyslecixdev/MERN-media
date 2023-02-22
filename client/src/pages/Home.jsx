@@ -3,6 +3,10 @@ import {useContext} from 'react';
 import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
+import Leftbar from '../components/Leftbar';
+import Middlebar from '../components/Middlebar';
+import Rightbar from '../components/Rightbar';
+
 import {tokens} from '../theme';
 import {ColorModeContext} from '../theme';
 
@@ -14,11 +18,13 @@ function Home() {
 
 	return (
 		<Box
-			class={`min-h-[90vh] flex justify-center items-center font-source ${
+			class={`min-h-[90vh] w-full flex gap-[100px] font-source px-12 py-8 ${
 				mode === 'dark' ? '' : 'bg-off-white'
 			}`}
 		>
-			Home
+			<Leftbar />
+			<Middlebar />
+			<Rightbar />
 		</Box>
 	);
 }

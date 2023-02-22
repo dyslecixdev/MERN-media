@@ -7,7 +7,8 @@ module.exports = {
 			// Color palette.
 			colors: {
 				orange: '#dfb175',
-				blue: '#0de7f8',
+				blue: '#2da4f8',
+				'light-blue': '#0de7f8',
 				black: '#0c101b',
 				'transparent-black': 'rgba(19, 25, 28, 0.8)',
 				white: '#ffffff',
@@ -22,6 +23,11 @@ module.exports = {
 			fontFamily: {
 				playfair: ['Playfair Display', 'serif'],
 				source: ['Source Sans Pro', 'sans-serif']
+			},
+			flex: {
+				2: '2 2 0%',
+				3: '3 3 0%',
+				6: '6 6 0%'
 			}
 		}
 	},

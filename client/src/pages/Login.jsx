@@ -52,7 +52,7 @@ function Login() {
 						</Typography>
 						<Typography class='text-lg'>
 							Don't have an account? Click{' '}
-							<Link to='/register' class='text-blue'>
+							<Link to='/register' class='text-light-blue'>
 								here
 							</Link>
 							.
