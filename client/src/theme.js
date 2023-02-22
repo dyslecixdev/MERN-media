@@ -222,7 +222,7 @@ const themeSettings = mode => {
 							main: colors.primary[500]
 						},
 						secondary: {
-							main: colors.secondary[500]
+							main: colors.secondary[100]
 						},
 						error: {
 							main: colors.redAccent[500]
