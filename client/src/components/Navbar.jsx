@@ -23,7 +23,6 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 import Logo from '../assets/logo.png';
 
-import {tokens} from '../theme';
 import {ColorModeContext} from '../theme';
 
 // Fake user data.

@@ -16,15 +16,6 @@ import ModeOutlinedIcon from '@mui/icons-material/ModeOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
-// Fake user data.
-const user = {
-	id: 1,
-	username: 'Christian',
-	email: 'cd@gmail.com',
-	profilePic: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-	desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt architecto pariatur praesentium maiores hic! Atque quod repudiandae officia delectus voluptas eos maxime a assumenda maiores sequi molestias itaque, veniam molestiae!'
-};
-
 // Fake posts data.
 const posts = 5;
 
@@ -34,17 +25,17 @@ const likes = 7;
 // Fake comments data.
 const comments = 3;
 
-function Leftbar() {
+function Leftbar({user}) {
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
 	return (
-		<Box class='h-full w-full py-8 flex-2'>
+		<Box class='h-full py-8 flex-1 hidden lg:block'>
 			<Box
 				class={`h-content w-full rounded-md flex flex-col items-center pt-4 px-8 ${
 					mode === 'dark'
-						? 'bg-gradient-to-br from-black via-black to-blue'
-						: 'bg-gradient-to-br from-white via-white to-blue'
+						? 'bg-gradient-to-br from-blue via-black to-black'
+						: 'bg-gradient-to-br from-blue via-white to-white'
 				}`}
 			>
 				{/* TOP HALF OF LEFTBAR */}
@@ -78,7 +69,7 @@ function Leftbar() {
 					<List>
 						{/* USER POSTS */}
 						<ListItem>
-							<ListItemIcon>
+							<ListItemIcon sx={{color: 'purple'}}>
 								<ModeOutlinedIcon />
 							</ListItemIcon>
 							<ListItemText primary='Posts' secondary={posts} />
@@ -86,7 +77,7 @@ function Leftbar() {
 
 						{/* USER LIKES */}
 						<ListItem>
-							<ListItemIcon>
+							<ListItemIcon sx={{color: 'red'}}>
 								<FavoriteBorderOutlinedIcon />
 							</ListItemIcon>
 							<ListItemText primary='Likes' secondary={likes} />
@@ -94,7 +85,7 @@ function Leftbar() {
 
 						{/* USER COMMENTS */}
 						<ListItem>
-							<ListItemIcon>
+							<ListItemIcon sx={{color: 'green'}}>
 								<MessageOutlinedIcon />
 							</ListItemIcon>
 							<ListItemText primary='Comments' secondary={comments} />

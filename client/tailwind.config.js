@@ -7,11 +7,14 @@ module.exports = {
 			// Color palette.
 			colors: {
 				orange: '#dfb175',
+				'light-blue': '#0de7f8',
 				blue: '#2da4f8',
 				'transparent-blue': 'rgba(45, 164, 248, 0.1)',
-				'light-blue': '#0de7f8',
+				'slate-blue': '#153a59',
+				'light-black': '#141b2d',
 				black: '#0c101b',
 				'transparent-black': 'rgba(19, 25, 28, 0.8)',
+				gray: '#e0e0e0',
 				white: '#ffffff',
 				'off-white': '#F9F6ED'
 			},
@@ -31,7 +34,11 @@ module.exports = {
 			flex: {
 				2: '2 2 0%',
 				3: '3 3 0%',
+				4: '4 4 0%',
+				5: '5 5 0%',
 				6: '6 6 0%',
+				7: '7 7 0%',
+				8: '8 8 0%',
 				9: '9 9 0%'
 			}
 		}

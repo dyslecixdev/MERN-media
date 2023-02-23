@@ -12,8 +12,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import CopyrightOutlinedIcon from '@mui/icons-material/CopyrightOutlined';
-
 import DarkLogo from '../assets/logo-text-dark.png';
 import LightLogo from '../assets/logo-text-light.png';
 
@@ -98,7 +96,7 @@ function Rightbar() {
 	const {mode} = theme.palette;
 
 	return (
-		<Box class='h-[90vh] w-full flex-3 flex flex-col items-center p-4 font-source'>
+		<Box class='h-[90vh] w-full flex-2 hidden sm:flex flex-col items-center p-4 font-source'>
 			{/* FRIENDS LIST */}
 			<Box class='h-full w-full flex-9 flex flex-col gap-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-blue scrollbar-track-transparent'>
 				<Typography class='font-playfair text-2xl self-center'>Friends</Typography>
@@ -130,7 +128,6 @@ function Rightbar() {
 					class='h-[9.5vh] w-fit object-cover'
 				/>
 				<Typography class='text-sm font-playfair font-black'>Christian Demesa</Typography>
-				<CopyrightOutlinedIcon />
 				<Typography class='text-sm font-playfair font-black'>2023</Typography>
 			</Box>
 		</Box>

@@ -231,7 +231,7 @@ const themeSettings = mode => {
 							main: colors.orangeAccent[500]
 						},
 						info: {
-							main: colors.blueAccent[500]
+							main: '#2da4f8'
 						},
 						success: {
 							main: colors.greenAccent[500]
@@ -259,7 +259,7 @@ const themeSettings = mode => {
 							main: colors.orangeAccent[500]
 						},
 						info: {
-							main: colors.blueAccent[500]
+							main: '#2da4f8'
 						},
 						success: {
 							main: colors.greenAccent[500]
