@@ -25,13 +25,7 @@ import Logo from '../assets/logo.png';
 
 import {ColorModeContext} from '../theme';
 
-// Fake user data.
-const user = {
-	id: 1,
-	username: 'Christian',
-	email: 'cd@gmail.com',
-	profilePic: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
-};
+import {user} from '../data';
 
 function Navbar() {
 	const theme = useTheme();
@@ -54,8 +48,8 @@ function Navbar() {
 		<Box>
 			{/* NAVBAR */}
 			<Box
-				class={`h-[10vh] font-source flex justify-between items-center px-8 ${
-					mode === 'dark' ? 'bg-black' : ''
+				class={`h-[10vh] font-source flex justify-between items-center px-8 sticky top-0 z-[9999] border-b-8 ${
+					mode === 'dark' ? 'bg-black border-light-black' : 'bg-white border-off-white'
 				}`}
 			>
 				{/* LEFT SIDE OF NAVBAR */}
@@ -74,7 +68,7 @@ function Navbar() {
 					<Box class='border-2 w-[260px] pl-4 hidden sm:block rounded-full'>
 						<FormControl>
 							<Input
-								disableUnderline='true'
+								disableUnderline={true}
 								endAdornment={
 									<IconButton>
 										<SearchIcon />
@@ -88,12 +82,8 @@ function Navbar() {
 				{/* RIGHT SIDE OF NAVBAR */}
 				<Box class='flex gap-[20px] items-center'>
 					{/* LIGHT/DARK MODE ICONS */}
-					<IconButton>
-						{mode === 'dark' ? (
-							<WbSunnyOutlinedIcon onClick={colorMode.toggleColorMode} />
-						) : (
-							<DarkModeOutlinedIcon onClick={colorMode.toggleColorMode} />
-						)}
+					<IconButton onClick={colorMode.toggleColorMode}>
+						{mode === 'dark' ? <WbSunnyOutlinedIcon /> : <DarkModeOutlinedIcon />}
 					</IconButton>
 
 					{/* CHAT ICON */}

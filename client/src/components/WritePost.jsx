@@ -16,7 +16,9 @@ import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 
-function WritePost({user}) {
+import {user} from '../data';
+
+function WritePost() {
 	const theme = useTheme();
 	const {mode} = theme.palette;
 

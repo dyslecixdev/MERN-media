@@ -219,13 +219,13 @@ const themeSettings = mode => {
 			...(mode === 'dark'
 				? {
 						primary: {
-							main: colors.primary[500]
+							main: '#0c101b'
 						},
 						secondary: {
-							main: colors.secondary[100]
+							main: '#EDEDED'
 						},
 						error: {
-							main: colors.redAccent[500]
+							main: '#C41717'
 						},
 						warning: {
 							main: colors.orangeAccent[500]
@@ -234,7 +234,7 @@ const themeSettings = mode => {
 							main: '#2da4f8'
 						},
 						success: {
-							main: colors.greenAccent[500]
+							main: '#108410'
 						},
 						neutral: {
 							dark: colors.greyAccent[700],
@@ -247,13 +247,13 @@ const themeSettings = mode => {
 				  }
 				: {
 						primary: {
-							main: colors.primary[100]
+							main: '#ffffff'
 						},
 						secondary: {
-							main: colors.secondary[500]
+							main: '#EDEDED'
 						},
 						error: {
-							main: colors.redAccent[500]
+							main: '#C41717'
 						},
 						warning: {
 							main: colors.orangeAccent[500]
@@ -262,7 +262,7 @@ const themeSettings = mode => {
 							main: '#2da4f8'
 						},
 						success: {
-							main: colors.greenAccent[500]
+							main: '#108410'
 						},
 						neutral: {
 							dark: colors.greyAccent[700],

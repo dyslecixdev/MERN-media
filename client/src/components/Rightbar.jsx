@@ -15,88 +15,14 @@ import Typography from '@mui/material/Typography';
 import DarkLogo from '../assets/logo-text-dark.png';
 import LightLogo from '../assets/logo-text-light.png';
 
-// Fake friends data.
-const friends = [
-	{
-		id: 1,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 2,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 3,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 4,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 5,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 6,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 7,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 8,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 9,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 10,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 11,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
-		id: 12,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	}
-];
+import {friends} from '../data';
 
 function Rightbar() {
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
 	return (
-		<Box class='h-[90vh] w-full flex-2 hidden sm:flex flex-col items-center p-4 font-source'>
+		<Box class='h-[90vh] w-full flex-2 hidden sm:flex flex-col items-center p-4 font-source sticky top-16'>
 			{/* FRIENDS LIST */}
 			<Box class='h-full w-full flex-9 flex flex-col gap-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-blue scrollbar-track-transparent'>
 				<Typography class='font-playfair text-2xl self-center'>Friends</Typography>

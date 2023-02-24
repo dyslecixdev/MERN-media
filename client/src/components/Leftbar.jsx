@@ -16,21 +16,14 @@ import ModeOutlinedIcon from '@mui/icons-material/ModeOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
-// Fake posts data.
-const posts = 5;
+import {user} from '../data';
 
-// Fake likes data.
-const likes = 7;
-
-// Fake comments data.
-const comments = 3;
-
-function Leftbar({user}) {
+function Leftbar() {
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
 	return (
-		<Box class='h-full py-8 flex-1 hidden lg:block'>
+		<Box class='h-full py-8 flex-1 hidden lg:block sticky top-20 font-source'>
 			<Box
 				class={`h-content w-full rounded-md flex flex-col items-center pt-4 px-8 ${
 					mode === 'dark'
@@ -72,7 +65,7 @@ function Leftbar({user}) {
 							<ListItemIcon sx={{color: 'purple'}}>
 								<ModeOutlinedIcon />
 							</ListItemIcon>
-							<ListItemText primary='Posts' secondary={posts} />
+							<ListItemText primary='Posts' secondary={user.posts} />
 						</ListItem>
 
 						{/* USER LIKES */}
@@ -80,7 +73,7 @@ function Leftbar({user}) {
 							<ListItemIcon sx={{color: 'red'}}>
 								<FavoriteBorderOutlinedIcon />
 							</ListItemIcon>
-							<ListItemText primary='Likes' secondary={likes} />
+							<ListItemText primary='Likes' secondary={user.likes} />
 						</ListItem>
 
 						{/* USER COMMENTS */}
@@ -88,7 +81,7 @@ function Leftbar({user}) {
 							<ListItemIcon sx={{color: 'green'}}>
 								<MessageOutlinedIcon />
 							</ListItemIcon>
-							<ListItemText primary='Comments' secondary={comments} />
+							<ListItemText primary='Comments' secondary={user.comments} />
 						</ListItem>
 					</List>
 				</Box>
