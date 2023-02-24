@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom';
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -23,7 +22,7 @@ function Leftbar() {
 	const {mode} = theme.palette;
 
 	return (
-		<Box class='h-full py-8 flex-1 hidden lg:block sticky top-20 font-source'>
+		<Box class='h-full flex-1 hidden lg:block sticky top-20 font-source'>
 			<Box
 				class={`h-content w-full rounded-md flex flex-col items-center pt-4 px-8 ${
 					mode === 'dark'
@@ -32,7 +31,7 @@ function Leftbar() {
 				}`}
 			>
 				{/* TOP HALF OF LEFTBAR */}
-				<Box class='flex flex-col gap-[20px] items-center mb-4'>
+				<Box class='flex flex-col gap-[20px] items-center mb-4 border-b-2'>
 					{/* USER AVATAR */}
 					<Avatar
 						alt={user.username}
@@ -53,10 +52,6 @@ function Leftbar() {
 					<Typography class='text-sm'>{user.desc}</Typography>
 				</Box>
 
-				{/* bug Divider disappears when toggling between dark and light mode */}
-				<Divider variant='middle' class='w-full'>
-					____________________________________
-				</Divider>
 				{/* BOTTOM HALF OF LEFTBAR */}
 				<Box>
 					<List>

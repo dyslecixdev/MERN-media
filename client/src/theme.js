@@ -222,7 +222,7 @@ const themeSettings = mode => {
 							main: '#0c101b'
 						},
 						secondary: {
-							main: '#EDEDED'
+							main: '#ffffff'
 						},
 						error: {
 							main: '#C41717'
@@ -250,7 +250,7 @@ const themeSettings = mode => {
 							main: '#ffffff'
 						},
 						secondary: {
-							main: '#EDEDED'
+							main: '#0c101b'
 						},
 						error: {
 							main: '#C41717'

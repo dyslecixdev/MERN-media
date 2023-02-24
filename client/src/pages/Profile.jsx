@@ -1,7 +1,12 @@
+// PROFILE PAGE
+
 import {useContext} from 'react';
 
 import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
+
+import UserContainer from '../components/UserContainer';
+import UserPosts from '../components/UserPosts';
 
 import {tokens} from '../theme';
 import {ColorModeContext} from '../theme';
@@ -14,11 +19,12 @@ function Profile() {
 
 	return (
 		<Box
-			class={`min-h-[90vh] flex justify-center items-center font-source ${
+			class={`min-h-[90vh] flex flex-col font-source px-8 py-4 ${
 				mode === 'dark' ? '' : 'bg-off-white'
 			}`}
 		>
-			Profile
+			<UserContainer />
+			<UserPosts />
 		</Box>
 	);
 }

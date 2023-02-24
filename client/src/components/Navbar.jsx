@@ -48,7 +48,7 @@ function Navbar() {
 		<Box>
 			{/* NAVBAR */}
 			<Box
-				class={`h-[10vh] font-source flex justify-between items-center px-8 sticky top-0 z-[9999] border-b-8 ${
+				class={`h-[10vh] font-source flex justify-between items-center px-8 sticky top-0 z-[1000] border-b-8 ${
 					mode === 'dark' ? 'bg-black border-light-black' : 'bg-white border-off-white'
 				}`}
 			>

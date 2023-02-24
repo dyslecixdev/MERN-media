@@ -22,7 +22,7 @@ function Rightbar() {
 	const {mode} = theme.palette;
 
 	return (
-		<Box class='h-[90vh] w-full flex-2 hidden sm:flex flex-col items-center p-4 font-source sticky top-16'>
+		<Box class='h-[90vh] w-full flex-2 hidden sm:flex flex-col items-center px-4 font-source sticky top-20'>
 			{/* FRIENDS LIST */}
 			<Box class='h-full w-full flex-9 flex flex-col gap-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-blue scrollbar-track-transparent'>
 				<Typography class='font-playfair text-2xl self-center'>Friends</Typography>

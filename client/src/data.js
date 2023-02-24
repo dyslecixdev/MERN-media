@@ -13,12 +13,6 @@ export const user = {
 // Fake friends data.
 export const friends = [
 	{
-		id: 1,
-		username: 'Bianca',
-		profilePic:
-			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
-	},
-	{
 		id: 2,
 		username: 'Bianca',
 		profilePic:
@@ -80,6 +74,12 @@ export const friends = [
 	},
 	{
 		id: 12,
+		username: 'Bianca',
+		profilePic:
+			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
+	},
+	{
+		id: 13,
 		username: 'Bianca',
 		profilePic:
 			'https://static.independent.co.uk/2021/12/07/10/PRI213893584.jpg?quality=75&width=982&height=726&auto=webp'
