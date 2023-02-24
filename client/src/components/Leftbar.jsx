@@ -22,7 +22,7 @@ function Leftbar() {
 	const {mode} = theme.palette;
 
 	return (
-		<Box class='h-full flex-1 hidden lg:block sticky top-20 font-source'>
+		<Box class='h-full flex-2 hidden lg:block sticky top-20 font-source'>
 			<Box
 				class={`h-content w-full rounded-md flex flex-col items-center pt-4 px-8 ${
 					mode === 'dark'

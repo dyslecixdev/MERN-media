@@ -20,7 +20,7 @@ function UserContainer() {
 	const {id} = useParams();
 
 	return (
-		<Box class='flex py-2 px-80 gap-[40px] font-source'>
+		<Box class='flex flex-col sm:flex-row items-center py-2 md:px-20 lg:px-40 xl:px-80 gap-[20px] md:gap-[40px] font-source'>
 			{/* USER AVATAR */}
 			<Avatar
 				alt={user.username}

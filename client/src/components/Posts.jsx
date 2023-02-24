@@ -22,7 +22,7 @@ function Posts() {
 		<Box class='w-full h-full mt-8 flex flex-col gap-[20px]'>
 			{/* POSTS CONTAINER */}
 			{posts.slice(0, numPosts).map(post => (
-				<Post post={post} />
+				<Post post={post} key={post.id} />
 			))}
 
 			{/* LOAD MORE BUTTON */}

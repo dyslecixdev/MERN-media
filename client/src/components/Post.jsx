@@ -21,7 +21,7 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 import {user} from '../data';
 
-function Post({post}) {
+function Post({post, grid}) {
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
@@ -35,10 +35,9 @@ function Post({post}) {
 
 	return (
 		<Box
-			key={post.id}
-			class={`h-content w-full rounded-md flex flex-col p-4 gap-[20px] font-source ${
-				mode === 'dark' ? 'bg-black' : 'bg-white'
-			}`}
+			class={`h-content w-full rounded-md flex flex-col p-4 ${
+				grid && 'justify-between'
+			} gap-[20px] font-source ${mode === 'dark' ? 'bg-black' : 'bg-white'}`}
 		>
 			{/* FIRST ROW */}
 			<Box class='flex gap-[20px] items-center'>
@@ -71,7 +70,7 @@ function Post({post}) {
 			</Box>
 
 			{/* THIRD ROW */}
-			<Box class='flex gap-[20px]'>
+			<Box class='flex gap-[20px] flex-col sm:flex-row'>
 				{/* LIKES BUTTON */}
 				<Button
 					variant={mode === 'dark' ? 'outlined' : 'contained'}
@@ -99,26 +98,28 @@ function Post({post}) {
 						mode === 'dark' ? 'bg-black' : 'bg-white'
 					}`}
 				>
-					<Box class='flex gap-[10px] items-center'>
-						{/* USER AVATAR */}
-						<Avatar alt={user.username} src={user.profilePic || user.username[0]} />
+					{!grid && (
+						<Box class='flex gap-[10px] items-center'>
+							{/* USER AVATAR */}
+							<Avatar alt={user.username} src={user.profilePic || user.username[0]} />
 
-						{/* COMMENT INPUT */}
-						<Box
-							class={`border-1 w-full pl-4 rounded-full flex items-center ${
-								mode === 'dark' ? 'bg-slate-blue' : 'bg-gray'
-							}`}
-						>
-							<FormControl>
-								<Input disableUnderline={true} />
-							</FormControl>
+							{/* COMMENT INPUT */}
+							<Box
+								class={`border-1 w-full pl-4 rounded-full flex items-center ${
+									mode === 'dark' ? 'bg-slate-blue' : 'bg-gray'
+								}`}
+							>
+								<FormControl>
+									<Input disableUnderline={true} />
+								</FormControl>
+							</Box>
+
+							{/* POST BUTTON */}
+							<Fab size='small' color={mode === 'dark' ? 'secondary' : 'info'}>
+								<SendOutlinedIcon />
+							</Fab>
 						</Box>
-
-						{/* POST BUTTON */}
-						<Fab size='small' color={mode === 'dark' ? 'secondary' : 'info'}>
-							<SendOutlinedIcon />
-						</Fab>
-					</Box>
+					)}
 
 					{/* COMMENTS CONTAINER */}
 					<List>
