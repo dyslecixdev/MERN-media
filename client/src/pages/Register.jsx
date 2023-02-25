@@ -7,6 +7,7 @@ import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Fab from '@mui/material/Fab';
 import FilledInput from '@mui/material/FilledInput';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
@@ -18,6 +19,7 @@ import Typography from '@mui/material/Typography';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 
 import DarkLogo from '../assets/logo-text-dark.png';
 import LightLogo from '../assets/logo-text-white.png';
@@ -101,11 +103,32 @@ function Register() {
 							/>
 						</FormControl>
 
-						{/* REGISTER BUTTON */}
-						<Button variant='contained' type='submit' color='secondary'>
-							Register
+						<Button class='flex gap-[20px] items-center w-full'>
+							{/* ADD PHOTO BUTTON */}
+							<Fab color='secondary'>
+								<AddAPhotoOutlinedIcon />
+							</Fab>
+
+							{/* REGISTER BUTTON */}
+							<Button
+								variant='contained'
+								type='submit'
+								color='secondary'
+								sx={{width: '70%'}}
+							>
+								Register
+							</Button>
 						</Button>
 					</Paper>
+
+					{/* TEXT FOR SMALL VIEWPORTS */}
+					<Typography class='text-lg mt-4 md:hidden'>
+						Already have an account? Click{' '}
+						<Link to='/login' class='text-orange'>
+							here
+						</Link>
+						.
+					</Typography>
 				</Box>
 
 				{/* RIGHT SIDE OF BOX */}

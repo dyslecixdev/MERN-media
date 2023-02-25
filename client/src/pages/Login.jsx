@@ -93,6 +93,15 @@ function Login() {
 							Login
 						</Button>
 					</Paper>
+
+					{/* TEXT FOR SMALL VIEWPORTS */}
+					<Typography class='text-lg mt-12 md:hidden'>
+						Don't have an account? Click{' '}
+						<Link to='/register' class='text-light-blue'>
+							here
+						</Link>
+						.
+					</Typography>
 				</Box>
 			</Box>
 		</Container>

@@ -87,7 +87,7 @@ function Navbar() {
 					</IconButton>
 
 					{/* CHAT ICON */}
-					<IconButton>
+					<IconButton component={Link} to='/chatroom'>
 						<ChatBubbleOutlineOutlinedIcon />
 					</IconButton>
 

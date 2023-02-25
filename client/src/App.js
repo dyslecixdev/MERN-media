@@ -7,12 +7,13 @@ import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import ChatRoom from './pages/ChatRoom';
 
 import {ColorModeContext, useMode} from './theme';
 
 function App() {
 	// Simulates a logged in user.
-	const user = true;
+	const user = false;
 
 	const [theme, colorMode] = useMode();
 
@@ -33,6 +34,7 @@ function App() {
 						<Route path='/' element={user ? <Navbar /> : <Navigate to='/login' />}>
 							<Route index element={<Home />} />
 							<Route path='/profile/:id' element={<Profile />} />
+							<Route path='/chatroom' element={<ChatRoom />} />
 						</Route>
 					</Routes>
 				</Box>
