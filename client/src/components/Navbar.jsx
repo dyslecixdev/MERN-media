@@ -23,11 +23,12 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 import Logo from '../assets/logo.png';
 
+import {AuthContext} from '../contexts/authContext';
 import {ColorModeContext} from '../theme';
 
-import {user} from '../data';
-
 function Navbar() {
+	const {currentUser} = useContext(AuthContext);
+
 	const theme = useTheme();
 	const {mode} = theme.palette;
 	const colorMode = useContext(ColorModeContext);
@@ -94,8 +95,8 @@ function Navbar() {
 					{/* USER AVATAR */}
 					<IconButton onClick={handleMenuOpen}>
 						<Avatar
-							alt={user.username}
-							src={user.profilePic || user.username[0]}
+							alt={currentUser.username}
+							src={currentUser.profilePic || currentUser.username[0]}
 							sx={{border: mode === 'dark' ? '2px solid white' : '2px solid black'}}
 						/>
 					</IconButton>
@@ -119,7 +120,7 @@ function Navbar() {
 						<MenuItem
 							onClick={handleMenuClose}
 							component={Link}
-							to={`/profile/${user.id}`}
+							to={`/profile/${currentUser.id}`}
 						>
 							<ListItemIcon>
 								<PersonOutlineOutlinedIcon fontSize='small' />

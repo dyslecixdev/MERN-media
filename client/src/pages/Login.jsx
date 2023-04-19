@@ -1,7 +1,7 @@
 // LOGIN PAGE
 
-import {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {useContext, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -22,14 +22,43 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import DarkLogo from '../assets/logo-text-dark.png';
 import LightLogo from '../assets/logo-text-white.png';
 
+import {AuthContext} from '../contexts/authContext';
+
 function Login() {
+	const navigate = useNavigate();
+
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
+	const {login} = useContext(AuthContext);
+
+	const [inputs, setInputs] = useState({
+		email: '',
+		password: ''
+	});
+	const [err, setErr] = useState('');
+
 	const [showPassword, setShowPassword] = useState(false);
+
+	// Handles input changes.
+	const handleChange = e => {
+		setInputs(prev => ({...prev, [e.target.name]: e.target.value}));
+	};
 
 	// Hides or reveals the password.
 	const handleClickShowPassword = () => setShowPassword(show => !show);
+
+	// Logs in a user using the inputs.
+	const handleClick = async e => {
+		e.preventDefault();
+
+		try {
+			await login(inputs);
+			navigate('/');
+		} catch (err) {
+			setErr(err.response.data);
+		}
+	};
 
 	return (
 		<Container class='min-h-[100vh] flex justify-center items-center font-source'>
@@ -67,12 +96,20 @@ function Login() {
 					{/* LOGIN FORM */}
 					<Paper component='form' class='flex flex-col bg-transparent gap-[60px]'>
 						{/* EMAIL INPUT */}
-						<TextField label='Email' variant='filled' color='secondary' />
+						<TextField
+							label='Email'
+							name='email'
+							onChange={handleChange}
+							variant='filled'
+							color='secondary'
+						/>
 
 						{/* PASSWORD INPUT */}
 						<FormControl variant='filled' color='secondary'>
 							<InputLabel htmlFor='filled-adornment-password'>Password</InputLabel>
 							<FilledInput
+								name='password'
+								onChange={handleChange}
 								type={showPassword ? 'text' : 'password'}
 								endAdornment={
 									<InputAdornment position='end'>
@@ -88,8 +125,18 @@ function Login() {
 							/>
 						</FormControl>
 
+						{/* ERROR MESSAGE */}
+						{err && (
+							<Typography class='text-red text-playfair text-lg'>{err}</Typography>
+						)}
+
 						{/* LOGIN BUTTON */}
-						<Button variant='contained' type='submit' color='secondary'>
+						<Button
+							onClick={handleClick}
+							variant='contained'
+							type='submit'
+							color='secondary'
+						>
 							Login
 						</Button>
 					</Paper>

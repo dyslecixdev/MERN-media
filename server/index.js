@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+// eslint-disable-next-line no-unused-vars
 import colors from 'colors';
 
 import authRoute from './routes/authRoute.js';

@@ -1,7 +1,7 @@
 // REGISTER PAGE
 
 import {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -24,18 +24,51 @@ import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 import DarkLogo from '../assets/logo-text-dark.png';
 import LightLogo from '../assets/logo-text-white.png';
 
+import axios from 'axios';
+
+import {AUTH_REGISTER_URL} from '../urls';
+
 function Register() {
+	const navigate = useNavigate();
+
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
+	const [inputs, setInputs] = useState({
+		name: '',
+		username: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		profilePic: ''
+	});
+	const [err, setErr] = useState('');
+
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	// Handles input changes.
+	const handleChange = e => {
+		setInputs(prev => ({...prev, [e.target.name]: e.target.value}));
+	};
 
 	// Hides or reveals the password.
 	const handleClickShowPassword = () => setShowPassword(show => !show);
 
 	// Hides or reveals the confirm password.
 	const handleClickShowConfirmPassword = () => setShowConfirmPassword(show => !show);
+
+	// Registers a user using the inputs.
+	const handleClick = async e => {
+		e.preventDefault();
+
+		try {
+			await axios.post(AUTH_REGISTER_URL, inputs);
+			navigate('/login');
+		} catch (err) {
+			setErr(err.response.data);
+		}
+	};
 
 	return (
 		<Container class='min-h-[100vh] flex justify-center items-center font-source'>
@@ -53,24 +86,43 @@ function Register() {
 
 					{/* REGISTER FORM */}
 					<Paper component='form' class='flex flex-col bg-transparent gap-[30px]'>
+						{/* NAME INPUT */}
+						<TextField
+							label='Full Name'
+							name='name'
+							onChange={handleChange}
+							variant='filled'
+							color='secondary'
+						/>
+
 						{/* USERNAME INPUT */}
-						<TextField label='Username' variant='filled' color='secondary' />
+						<TextField
+							label='Username'
+							name='username'
+							onChange={handleChange}
+							variant='filled'
+							color='secondary'
+						/>
 
 						{/* EMAIL INPUT */}
-						<TextField label='Email' variant='filled' color='secondary' />
+						<TextField
+							label='Email'
+							name='email'
+							onChange={handleChange}
+							variant='filled'
+							color='secondary'
+						/>
 
 						{/* PASSWORD INPUT */}
 						<FormControl variant='filled' color='secondary'>
 							<InputLabel htmlFor='filled-adornment-password'>Password</InputLabel>
 							<FilledInput
+								name='password'
+								onChange={handleChange}
 								type={showPassword ? 'text' : 'password'}
 								endAdornment={
 									<InputAdornment position='end'>
-										<IconButton
-											aria-label='toggle password visibility'
-											onClick={handleClickShowPassword}
-											edge='end'
-										>
+										<IconButton onClick={handleClickShowPassword} edge='end'>
 											{showPassword ? <VisibilityOff /> : <Visibility />}
 										</IconButton>
 									</InputAdornment>
@@ -84,11 +136,12 @@ function Register() {
 								Confirm Password
 							</InputLabel>
 							<FilledInput
+								name='confirmPassword'
+								onChange={handleChange}
 								type={showConfirmPassword ? 'text' : 'password'}
 								endAdornment={
 									<InputAdornment position='end'>
 										<IconButton
-											aria-label='toggle password visibility'
 											onClick={handleClickShowConfirmPassword}
 											edge='end'
 										>
@@ -103,14 +156,20 @@ function Register() {
 							/>
 						</FormControl>
 
+						{/* ERROR MESSAGE */}
+						{err && (
+							<Typography class='text-red text-playfair text-lg'>{err}</Typography>
+						)}
+
 						<Box class='flex gap-[20px] items-center w-full'>
 							{/* ADD PHOTO BUTTON */}
-							<Fab color='secondary'>
+							<Fab name='profilePic' onChange={handleChange} color='secondary'>
 								<AddAPhotoOutlinedIcon />
 							</Fab>
 
 							{/* REGISTER BUTTON */}
 							<Button
+								onClick={handleClick}
 								variant='contained'
 								type='submit'
 								color='secondary'

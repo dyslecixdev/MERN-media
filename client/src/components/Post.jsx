@@ -1,6 +1,6 @@
 // POST
 
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
@@ -20,9 +20,11 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
-import {user} from '../data';
+import {AuthContext} from '../contexts/authContext';
 
 function Post({post, grid}) {
+	const {currentUser} = useContext(AuthContext);
+
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
@@ -48,7 +50,7 @@ function Post({post, grid}) {
 				{/* POST USERNAME */}
 				<Typography
 					component={Link}
-					to={`/profile/${user.id}`}
+					to={`/profile/${currentUser.id}`}
 					class='font-playfair text-lg hover:text-blue transition-colors ease-out'
 				>
 					{post.user}
@@ -108,7 +110,10 @@ function Post({post, grid}) {
 					{!grid && (
 						<Box class='flex gap-[10px] items-center'>
 							{/* USER AVATAR */}
-							<Avatar alt={user.username} src={user.profilePic || user.username[0]} />
+							<Avatar
+								alt={currentUser.username}
+								src={currentUser.profilePic || currentUser.username[0]}
+							/>
 
 							{/* COMMENT INPUT */}
 							<Box

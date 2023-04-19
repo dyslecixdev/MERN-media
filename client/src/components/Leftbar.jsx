@@ -1,5 +1,6 @@
 // LEFTBAR
 
+import {useContext} from 'react';
 import {Link} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
@@ -15,9 +16,12 @@ import ModeOutlinedIcon from '@mui/icons-material/ModeOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
-import {user} from '../data';
+import {AuthContext} from '../contexts/authContext';
 
 function Leftbar() {
+	const {currentUser} = useContext(AuthContext);
+	console.log(currentUser);
+
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
@@ -34,22 +38,22 @@ function Leftbar() {
 				<Box class='flex flex-col gap-[20px] items-center mb-4 border-b-2'>
 					{/* USER AVATAR */}
 					<Avatar
-						alt={user.username}
-						src={user.profilePic || user.username[0]}
+						alt={currentUser.username}
+						src={currentUser.profilePic || currentUser.username[0]}
 						sx={{height: '100px', width: '100px'}}
 					/>
 
 					{/* USERNAME */}
 					<Typography
 						component={Link}
-						to={`/profile/${user.id}`}
+						to={`/profile/${currentUser.id}`}
 						class='font-playfair text-2xl hover:text-blue transition-colors ease-out'
 					>
-						{user.username}
+						{currentUser.username}
 					</Typography>
 
 					{/* USER DESCRIPTION */}
-					<Typography class='text-sm'>{user.desc}</Typography>
+					<Typography class='text-sm'>{currentUser.desc}</Typography>
 				</Box>
 
 				{/* BOTTOM HALF OF LEFTBAR */}
@@ -60,7 +64,8 @@ function Leftbar() {
 							<ListItemIcon sx={{color: 'purple'}}>
 								<ModeOutlinedIcon />
 							</ListItemIcon>
-							<ListItemText primary='Posts' secondary={user.posts} />
+							{/* todo */}
+							<ListItemText primary='Posts' secondary={currentUser.posts || 0} />
 						</ListItem>
 
 						{/* USER LIKES */}
@@ -68,7 +73,8 @@ function Leftbar() {
 							<ListItemIcon sx={{color: 'red'}}>
 								<FavoriteBorderOutlinedIcon />
 							</ListItemIcon>
-							<ListItemText primary='Likes' secondary={user.likes} />
+							{/* todo */}
+							<ListItemText primary='Likes' secondary={currentUser.likes || 0} />
 						</ListItem>
 
 						{/* USER COMMENTS */}
@@ -76,7 +82,11 @@ function Leftbar() {
 							<ListItemIcon sx={{color: 'green'}}>
 								<MessageOutlinedIcon />
 							</ListItemIcon>
-							<ListItemText primary='Comments' secondary={user.comments} />
+							{/* todo */}
+							<ListItemText
+								primary='Comments'
+								secondary={currentUser.comments || 0}
+							/>
 						</ListItem>
 					</List>
 				</Box>

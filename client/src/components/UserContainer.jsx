@@ -1,6 +1,6 @@
 // USER CONTAINER
 
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
@@ -25,9 +25,11 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 
-import {user} from '../data';
+import {AuthContext} from '../contexts/authContext';
 
 function UserContainer() {
+	const {currentUser} = useContext(AuthContext);
+
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
@@ -53,8 +55,8 @@ function UserContainer() {
 		<Box class='flex flex-col sm:flex-row items-center py-2 md:px-20 lg:px-40 xl:px-80 gap-[20px] md:gap-[40px] font-source'>
 			{/* USER AVATAR */}
 			<Avatar
-				alt={user.username}
-				src={user.profilePic || user.username[0]}
+				alt={currentUser.username}
+				src={currentUser.profilePic || currentUser.username[0]}
 				sx={{width: 200, height: 200}}
 			/>
 
@@ -63,10 +65,10 @@ function UserContainer() {
 				{/* TOP PART OF CONTAINER */}
 				<Box class='flex gap-[20px] items-center'>
 					{/* USERNAME */}
-					<Typography class='font-playfair text-3xl'>{user.username}</Typography>
+					<Typography class='font-playfair text-3xl'>{currentUser.username}</Typography>
 
 					{/* EDIT PROFILE OR ADD FRIEND BUTTON */}
-					{Number(id) === user.id ? (
+					{Number(id) === currentUser.id ? (
 						<Button
 							onClick={handleModalOpen}
 							variant={mode === 'dark' ? 'outlined' : 'contained'}
@@ -90,25 +92,31 @@ function UserContainer() {
 				<Box class='flex gap-[40px] items-center'>
 					{/* USER POSTS */}
 					<Box class='flex gap-[7px] text-xl items-baseline'>
-						<Typography class='font-black'>{user.posts}</Typography>{' '}
+						{/* todo */}
+						<Typography class='font-black'>{currentUser.posts || 0}</Typography>{' '}
 						<Typography>posts</Typography>
 					</Box>
 
 					{/* USER LIKES */}
 					<Box class='flex gap-[7px] text-xl items-baseline'>
-						<Typography class='font-black'>{user.likes}</Typography>{' '}
+						{/* todo */}
+						<Typography class='font-black'>{currentUser.likes || 0}</Typography>{' '}
 						<Typography>likes</Typography>
 					</Box>
 
 					{/* USER COMMENTS */}
 					<Box class='flex gap-[7px] text-xl items-baseline'>
-						<Typography class='font-black'>{user.comments}</Typography>{' '}
+						{/* todo */}
+						<Typography class='font-black'>{currentUser.comments || 0}</Typography>{' '}
 						<Typography>comments</Typography>
 					</Box>
 				</Box>
 
+				{/* USER'S NAME */}
+				<Typography>{currentUser.name}</Typography>
+
 				{/* USER DESCRIPTION */}
-				<Typography>{user.desc}</Typography>
+				<Typography>{currentUser.desc}</Typography>
 			</Box>
 
 			{/* USER EDIT MODAL */}

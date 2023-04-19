@@ -1,6 +1,6 @@
 // WRITE A POST
 
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -16,9 +16,11 @@ import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 
-import {user} from '../data';
+import {AuthContext} from '../contexts/authContext';
 
 function WritePost() {
+	const {currentUser} = useContext(AuthContext);
+
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
@@ -41,7 +43,10 @@ function WritePost() {
 			}`}
 		>
 			{/* LOGO */}
-			<Avatar alt={user.username} src={user.profilePic || user.username[0]} />
+			<Avatar
+				alt={currentUser.username}
+				src={currentUser.profilePic || currentUser.username[0]}
+			/>
 
 			{/* FAKE TEXT INPUT */}
 			<Box
@@ -73,8 +78,11 @@ function WritePost() {
 
 						{/* USERNAME AND AVATAR */}
 						<Box class='flex items-center gap-[20px]'>
-							<Avatar alt={user.username} src={user.profilePic || user.username[0]} />
-							<Typography>{user.username}</Typography>
+							<Avatar
+								alt={currentUser.username}
+								src={currentUser.profilePic || currentUser.username[0]}
+							/>
+							<Typography>{currentUser.username}</Typography>
 						</Box>
 
 						{/* MESSAGE INPUT */}

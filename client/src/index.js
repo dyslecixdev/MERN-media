@@ -1,8 +1,7 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import {BrowserRouter} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import {store} from './app/store';
+import {AuthContextProvider} from './contexts/authContext';
 import App from './App';
 import './index.css';
 
@@ -12,9 +11,9 @@ const root = createRoot(container);
 root.render(
 	<React.StrictMode>
 		<BrowserRouter>
-			<Provider store={store}>
+			<AuthContextProvider>
 				<App />
-			</Provider>
+			</AuthContextProvider>
 		</BrowserRouter>
 	</React.StrictMode>
 );
