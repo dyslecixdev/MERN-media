@@ -103,7 +103,7 @@ function Register() {
 							/>
 						</FormControl>
 
-						<Button class='flex gap-[20px] items-center w-full'>
+						<Box class='flex gap-[20px] items-center w-full'>
 							{/* ADD PHOTO BUTTON */}
 							<Fab color='secondary'>
 								<AddAPhotoOutlinedIcon />
@@ -118,7 +118,7 @@ function Register() {
 							>
 								Register
 							</Button>
-						</Button>
+						</Box>
 					</Paper>
 
 					{/* TEXT FOR SMALL VIEWPORTS */}

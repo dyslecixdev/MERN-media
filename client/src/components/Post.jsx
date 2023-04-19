@@ -1,6 +1,7 @@
 // POST
 
 import {useState} from 'react';
+import {Link} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -45,7 +46,13 @@ function Post({post, grid}) {
 				<Avatar alt={post.user} src={post.profilePic || post.user[0]} />
 
 				{/* POST USERNAME */}
-				<Typography class='font-playfair text-lg'>{post.user}</Typography>
+				<Typography
+					component={Link}
+					to={`/profile/${user.id}`}
+					class='font-playfair text-lg hover:text-blue transition-colors ease-out'
+				>
+					{post.user}
+				</Typography>
 			</Box>
 
 			{/* SECOND ROW */}
