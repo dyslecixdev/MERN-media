@@ -2,6 +2,8 @@
 
 import {useContext, useState} from 'react';
 
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -18,14 +20,49 @@ import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined
 
 import {AuthContext} from '../contexts/authContext';
 
+import axios from 'axios';
+
+import {POST_URL, FILE_URL} from '../urls';
+
 function WritePost() {
 	const {currentUser} = useContext(AuthContext);
 
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
+	const queryClient = useQueryClient();
+
 	const [message, setMessage] = useState('');
+	const [picture, setPicture] = useState(null);
+
 	const [open, setOpen] = useState(false);
+
+	// Uploads a post's image.
+	const upload = async () => {
+		try {
+			const formData = new FormData();
+			formData.append('picture', picture);
+			// Note the below route is in server/index.js
+			const res = await axios.post(FILE_URL, formData, {
+				withCredentials: true
+			});
+			return res.data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	// Gets all the posts again after mutating existing data (e.g. creating or editing data).
+	const mutation = useMutation({
+		mutationFn: newPost => {
+			return axios.post(POST_URL, newPost, {
+				withCredentials: true
+			});
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({queryKey: ['posts']});
+		}
+	});
 
 	// Opens the modal.
 	const handleModalOpen = () => setOpen(true);
@@ -33,7 +70,20 @@ function WritePost() {
 	// Closes the modal.
 	const handleModalClose = () => {
 		setMessage('');
+		setPicture(null);
 		setOpen(false);
+	};
+
+	// Creates a post.
+	const handleClick = async e => {
+		e.preventDefault();
+
+		let pictureUrl = '';
+		if (picture) pictureUrl = await upload();
+
+		mutation.mutate({message, picture: pictureUrl});
+
+		handleModalClose();
 	};
 
 	return (
@@ -62,7 +112,7 @@ function WritePost() {
 			<Modal open={open} onClose={handleModalClose}>
 				<Box class='h-screen w-screen flex justify-center items-center'>
 					<Box
-						class={`h-[500px] w-[400px] p-4 rounded-lg flex flex-col gap-[30px] ${
+						class={`h-[500px] w-[400px] p-4 rounded-lg flex flex-col gap-[25px] ${
 							mode === 'dark' ? 'bg-black' : 'bg-white'
 						}`}
 					>
@@ -100,8 +150,21 @@ function WritePost() {
 							</IconButton>
 
 							{/* PICTURE BUTTON */}
-							<IconButton>
-								<CameraAltOutlinedIcon />
+							<IconButton component='label' htmlFor='picture'>
+								{!picture && <CameraAltOutlinedIcon />}
+								{picture && (
+									<Avatar
+										alt='picture'
+										src={URL.createObjectURL(picture)}
+										sx={{width: 24, height: 24}}
+									/>
+								)}
+								<input
+									id='picture'
+									type='file'
+									hidden
+									onChange={e => setPicture(e.target.files[0])}
+								/>
 							</IconButton>
 
 							{/* VIDEO BUTTON */}
@@ -110,7 +173,12 @@ function WritePost() {
 							</IconButton>
 
 							{/* POST BUTTON */}
-							<Button variant='contained' color='info' disabled={!message}>
+							<Button
+								onClick={handleClick}
+								variant='contained'
+								color='info'
+								disabled={!message}
+							>
 								Post
 							</Button>
 						</Box>

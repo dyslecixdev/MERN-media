@@ -10,20 +10,21 @@ import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import ListItemText from '@mui/material/ListItemText';
+// import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Typography from '@mui/material/Typography';
 
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
+import moment from 'moment';
+
 import {AuthContext} from '../contexts/authContext';
 
 function Post({post, grid}) {
-	console.log(post);
 	const {currentUser} = useContext(AuthContext);
 
 	const theme = useTheme();
@@ -44,18 +45,22 @@ function Post({post, grid}) {
 			} gap-[20px] font-source ${mode === 'dark' ? 'bg-black' : 'bg-white'}`}
 		>
 			{/* FIRST ROW */}
-			<Box class='flex gap-[20px] items-center'>
-				{/* POST USER AVATAR */}
-				<Avatar alt={post.username} src={post.profilePic || post.username[0]} />
+			<Box class='flex justify-between items-center'>
+				<Box class='flex gap-[20px] items-center'>
+					{/* POST USER AVATAR */}
+					<Avatar alt={post.username} src={post.profilePic || post.username[0]} />
 
-				{/* POST USERNAME */}
-				<Typography
-					component={Link}
-					to={`/profile/${currentUser.id}`}
-					class='font-playfair text-lg hover:text-blue transition-colors ease-out'
-				>
-					{post.username}
-				</Typography>
+					{/* POST USERNAME */}
+					<Typography
+						component={Link}
+						to={`/profile/${currentUser.id}`}
+						class='font-playfair text-lg hover:text-blue transition-colors ease-out'
+					>
+						{post.username}
+					</Typography>
+				</Box>
+
+				<Typography>{moment(post.createdAt).fromNow()}</Typography>
 			</Box>
 
 			{/* SECOND ROW */}
@@ -67,8 +72,9 @@ function Post({post, grid}) {
 				{post.picture && (
 					<Box
 						component='img'
-						src={post.picture}
-						alt='post image'
+						// Example of getting the picture from the public folder.
+						src={process.env.PUBLIC_URL + '/upload/' + post.picture}
+						alt='post picture'
 						class='h-full w-full'
 					/>
 				)}
