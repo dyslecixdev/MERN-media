@@ -49,7 +49,7 @@ function Register() {
 
 	// Handles input changes.
 	const handleChange = e => {
-		setInputs(prev => ({...prev, [e.target.name]: e.target.value}));
+		setInputs(prevInputs => ({...prevInputs, [e.target.name]: e.target.value}));
 	};
 
 	// Hides or reveals the password.

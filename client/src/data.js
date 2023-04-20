@@ -1,7 +1,7 @@
 // Fake user data.
 export const user = {
 	id: 1,
-	username: 'Christian',
+	username: 'Dyslecix',
 	email: 'cd@gmail.com',
 	profilePic: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
 	desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt architecto pariatur praesentium maiores hic! Atque quod repudiandae officia delectus voluptas eos maxime a assumenda maiores sequi molestias itaque, veniam molestiae!',
@@ -91,7 +91,7 @@ export const posts = [
 	{
 		id: 1,
 		message: 'Hello, this is my post.',
-		user: 'Christian',
+		user: 'Dyslecix',
 		profilePic: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
 		likes: 5,
 		comments: [
@@ -124,7 +124,7 @@ export const posts = [
 	{
 		id: 2,
 		message: 'Hello, this is my post.',
-		user: 'Christian',
+		user: 'Dyslecix',
 		profilePic: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
 		likes: 5,
 		comments: [
@@ -157,7 +157,7 @@ export const posts = [
 	{
 		id: 3,
 		message: 'Hello, this is my post.',
-		user: 'Christian',
+		user: 'Dyslecix',
 		profilePic: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
 		likes: 5,
 		comments: [

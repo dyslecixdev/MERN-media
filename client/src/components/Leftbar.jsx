@@ -20,7 +20,6 @@ import {AuthContext} from '../contexts/authContext';
 
 function Leftbar() {
 	const {currentUser} = useContext(AuthContext);
-	console.log(currentUser);
 
 	const theme = useTheme();
 	const {mode} = theme.palette;

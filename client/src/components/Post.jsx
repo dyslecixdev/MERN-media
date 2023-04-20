@@ -23,6 +23,7 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import {AuthContext} from '../contexts/authContext';
 
 function Post({post, grid}) {
+	console.log(post);
 	const {currentUser} = useContext(AuthContext);
 
 	const theme = useTheme();
@@ -45,7 +46,7 @@ function Post({post, grid}) {
 			{/* FIRST ROW */}
 			<Box class='flex gap-[20px] items-center'>
 				{/* POST USER AVATAR */}
-				<Avatar alt={post.user} src={post.profilePic || post.user[0]} />
+				<Avatar alt={post.username} src={post.profilePic || post.username[0]} />
 
 				{/* POST USERNAME */}
 				<Typography
@@ -53,7 +54,7 @@ function Post({post, grid}) {
 					to={`/profile/${currentUser.id}`}
 					class='font-playfair text-lg hover:text-blue transition-colors ease-out'
 				>
-					{post.user}
+					{post.username}
 				</Typography>
 			</Box>
 
@@ -73,9 +74,9 @@ function Post({post, grid}) {
 				)}
 
 				{/* POST VIDEO */}
-				{post.video && (
+				{/* {post.video && (
 					<Box component='iframe' src={post.video} class='h-content w-content' />
-				)}
+				)} */}
 			</Box>
 
 			{/* THIRD ROW */}
@@ -86,7 +87,8 @@ function Post({post, grid}) {
 					color='error'
 					startIcon={<FavoriteBorderOutlinedIcon />}
 				>
-					{post.likes} Likes
+					{/* todo */}
+					{post.likes || 0} Likes
 				</Button>
 
 				{/* COMMENTS BUTTON */}
@@ -96,7 +98,8 @@ function Post({post, grid}) {
 					startIcon={<MessageOutlinedIcon />}
 					onClick={() => handleCommentsToggle(post.id)}
 				>
-					{post.comments.length} Comments
+					{/* todo */}
+					{/* {post.comments.length} */} 0 Comments
 				</Button>
 			</Box>
 
@@ -134,22 +137,22 @@ function Post({post, grid}) {
 					)}
 
 					{/* COMMENTS CONTAINER */}
-					<List>
+					{/* <List>
 						{post.comments.map(comment => (
-							<ListItem key={comment.id}>
-								{/* COMMENT USER AVATAR */}
-								<ListItemAvatar>
+							<ListItem key={comment.id}> */}
+					{/* COMMENT USER AVATAR */}
+					{/* <ListItemAvatar>
 									<Avatar
 										alt={comment.profilePic}
 										src={comment.profilePic || comment.user[0]}
 									/>
-								</ListItemAvatar>
+								</ListItemAvatar> */}
 
-								{/* COMMENT USERNAME AND COMMENT */}
-								<ListItemText primary={comment.user} secondary={comment.comment} />
+					{/* COMMENT USERNAME AND COMMENT */}
+					{/* <ListItemText primary={comment.user} secondary={comment.comment} />
 							</ListItem>
 						))}
-					</List>
+					</List> */}
 				</Box>
 			)}
 		</Box>
