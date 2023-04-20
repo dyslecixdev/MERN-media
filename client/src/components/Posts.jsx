@@ -15,7 +15,7 @@ import {POST_URL} from '../urls';
 import Post from './Post';
 
 function Posts() {
-	// Provides an isLoading state, error, and data while fetching data.
+	// Provides an isLoading state, error, and data while fetching posts data.
 	const {isLoading, error, data} = useQuery({
 		queryKey: ['posts'],
 		queryFn: () =>

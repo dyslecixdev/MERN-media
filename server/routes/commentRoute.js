@@ -1,9 +1,9 @@
 import express from 'express';
-import {} from '../controllers/commentController.js';
-// import {protect} from '../middlewares/authMiddleware.js';
+import {createComment, getComments} from '../controllers/commentController.js';
 
 const router = express.Router();
 
-router.get('');
+router.post('/', createComment);
+router.get('/', getComments);
 
 export default router;
