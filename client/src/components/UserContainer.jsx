@@ -3,6 +3,8 @@
 import {useContext, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
+import {useMutation, useQueryClient, useQuery} from '@tanstack/react-query';
+
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -27,6 +29,10 @@ import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 
 import {AuthContext} from '../contexts/authContext';
 
+import axios from 'axios';
+
+import {GET_USER_URL} from '../urls';
+
 function UserContainer() {
 	const {currentUser} = useContext(AuthContext);
 
@@ -35,9 +41,24 @@ function UserContainer() {
 
 	const {id} = useParams();
 
+	const queryClient = useQueryClient();
+
 	const [open, setOpen] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	// Fetching this user.
+	const {isLoading, error, data} = useQuery({
+		queryKey: ['user', id],
+		queryFn: () =>
+			axios
+				.get(GET_USER_URL(id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
 
 	// Hides or reveals the password.
 	const handleClickShowPassword = () => setShowPassword(show => !show);
@@ -54,70 +75,92 @@ function UserContainer() {
 	return (
 		<Box class='flex flex-col sm:flex-row items-center py-2 md:px-20 lg:px-40 xl:px-80 gap-[20px] md:gap-[40px] font-source'>
 			{/* USER AVATAR */}
-			<Avatar
-				alt={currentUser.username}
-				src={currentUser.profilePic || currentUser.username[0]}
-				sx={{width: 200, height: 200}}
-			/>
+			{error ? (
+				<Typography class='text-red text-playfair text-lg'>
+					Something went wrong!
+				</Typography>
+			) : isLoading ? (
+				<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
+			) : (
+				<Avatar
+					alt={data.username}
+					src={data.profilePic || data.username[0]}
+					sx={{width: 200, height: 200}}
+				/>
+			)}
 
 			{/* CONTAINER RIGHT OF USER AVATAR */}
-			<Box class='flex flex-col gap-[20px]'>
-				{/* TOP PART OF CONTAINER */}
-				<Box class='flex gap-[20px] items-center'>
-					{/* USERNAME */}
-					<Typography class='font-playfair text-3xl'>{currentUser.username}</Typography>
+			{error ? (
+				<Typography class='text-red text-playfair text-lg'>
+					Something went wrong!
+				</Typography>
+			) : isLoading ? (
+				<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
+			) : (
+				<Box class='flex flex-col gap-[20px]'>
+					{/* TOP PART OF CONTAINER */}
+					<Box class='flex gap-[20px] items-center'>
+						{/* USERNAME */}
+						<Typography class='font-playfair text-3xl'>{data.username}</Typography>
 
-					{/* EDIT PROFILE OR ADD FRIEND BUTTON */}
-					{Number(id) === currentUser.id ? (
-						<Button
-							onClick={handleModalOpen}
-							variant={mode === 'dark' ? 'outlined' : 'contained'}
-							color='secondary'
-							startIcon={<SettingsOutlinedIcon />}
-						>
-							Edit Profile
-						</Button>
-					) : (
-						<Button
-							variant={mode === 'dark' ? 'outlined' : 'contained'}
-							color='secondary'
-							startIcon={<PersonAddOutlinedIcon />}
-						>
-							Add Friend
-						</Button>
-					)}
+						{/* EDIT PROFILE OR ADD FRIEND BUTTON */}
+						{Number(id) === currentUser.id ? (
+							<Button
+								onClick={handleModalOpen}
+								variant={mode === 'dark' ? 'outlined' : 'contained'}
+								color='secondary'
+								startIcon={<SettingsOutlinedIcon />}
+							>
+								Edit Profile
+							</Button>
+						) : (
+							<Button
+								variant={mode === 'dark' ? 'outlined' : 'contained'}
+								color='secondary'
+								startIcon={<PersonAddOutlinedIcon />}
+							>
+								Add Friend
+							</Button>
+						)}
+					</Box>
+
+					{/* BOTTOM PART OF CONTAINER */}
+					<Box class='flex gap-[40px] items-center'>
+						{/* USER POSTS */}
+						<Box class='flex gap-[7px] text-xl items-baseline'>
+							{/* todo */}
+							<Typography class='font-black'>
+								{currentUser.posts || 0}
+							</Typography>{' '}
+							<Typography>posts</Typography>
+						</Box>
+
+						{/* USER LIKES */}
+						<Box class='flex gap-[7px] text-xl items-baseline'>
+							{/* todo */}
+							<Typography class='font-black'>
+								{currentUser.likes || 0}
+							</Typography>{' '}
+							<Typography>likes</Typography>
+						</Box>
+
+						{/* USER COMMENTS */}
+						<Box class='flex gap-[7px] text-xl items-baseline'>
+							{/* todo */}
+							<Typography class='font-black'>
+								{currentUser.comments || 0}
+							</Typography>{' '}
+							<Typography>comments</Typography>
+						</Box>
+					</Box>
+
+					{/* USER'S NAME */}
+					<Typography>{data.name}</Typography>
+
+					{/* USER DESCRIPTION */}
+					<Typography>{data.desc}</Typography>
 				</Box>
-
-				{/* BOTTOM PART OF CONTAINER */}
-				<Box class='flex gap-[40px] items-center'>
-					{/* USER POSTS */}
-					<Box class='flex gap-[7px] text-xl items-baseline'>
-						{/* todo */}
-						<Typography class='font-black'>{currentUser.posts || 0}</Typography>{' '}
-						<Typography>posts</Typography>
-					</Box>
-
-					{/* USER LIKES */}
-					<Box class='flex gap-[7px] text-xl items-baseline'>
-						{/* todo */}
-						<Typography class='font-black'>{currentUser.likes || 0}</Typography>{' '}
-						<Typography>likes</Typography>
-					</Box>
-
-					{/* USER COMMENTS */}
-					<Box class='flex gap-[7px] text-xl items-baseline'>
-						{/* todo */}
-						<Typography class='font-black'>{currentUser.comments || 0}</Typography>{' '}
-						<Typography>comments</Typography>
-					</Box>
-				</Box>
-
-				{/* USER'S NAME */}
-				<Typography>{currentUser.name}</Typography>
-
-				{/* USER DESCRIPTION */}
-				<Typography>{currentUser.desc}</Typography>
-			</Box>
+			)}
 
 			{/* USER EDIT MODAL */}
 			<Modal open={open} onClose={handleModalClose}>
