@@ -25,12 +25,12 @@ import LightLogo from '../assets/logo-text-white.png';
 import {AuthContext} from '../contexts/authContext';
 
 function Login() {
-	const navigate = useNavigate();
+	const {login} = useContext(AuthContext);
 
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
-	const {login} = useContext(AuthContext);
+	const navigate = useNavigate();
 
 	const [inputs, setInputs] = useState({
 		email: '',

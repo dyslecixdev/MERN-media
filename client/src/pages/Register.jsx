@@ -29,10 +29,10 @@ import axios from 'axios';
 import {AUTH_REGISTER_URL} from '../urls';
 
 function Register() {
-	const navigate = useNavigate();
-
 	const theme = useTheme();
 	const {mode} = theme.palette;
+
+	const navigate = useNavigate();
 
 	const [inputs, setInputs] = useState({
 		name: '',

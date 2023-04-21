@@ -2,7 +2,7 @@ import {createContext, useState, useEffect} from 'react';
 
 import axios from 'axios';
 
-import {AUTH_LOGIN_URL} from '../urls';
+import {AUTH_LOGIN_URL, AUTH_LOGOUT_URL} from '../urls';
 
 export const AuthContext = createContext();
 
@@ -25,5 +25,16 @@ export const AuthContextProvider = ({children}) => {
 		setCurrentUser(res.data);
 	};
 
-	return <AuthContext.Provider value={{currentUser, login}}>{children}</AuthContext.Provider>;
+	// Logs out a user.
+	const logout = async () => {
+		await axios.post(AUTH_LOGOUT_URL, {
+			withCredentials: true
+		});
+
+		setCurrentUser(null);
+	};
+
+	return (
+		<AuthContext.Provider value={{currentUser, login, logout}}>{children}</AuthContext.Provider>
+	);
 };

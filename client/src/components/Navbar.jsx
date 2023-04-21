@@ -1,7 +1,7 @@
 // NAVBAR
 
 import {useContext, useState} from 'react';
-import {Outlet, Link} from 'react-router-dom';
+import {Outlet, Link, useNavigate} from 'react-router-dom';
 
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -26,12 +26,19 @@ import Logo from '../assets/logo.png';
 import {AuthContext} from '../contexts/authContext';
 import {ColorModeContext} from '../theme';
 
+import axios from 'axios';
+
+import {AUTH_LOGOUT_URL} from '../urls';
+
 function Navbar() {
 	const {currentUser} = useContext(AuthContext);
+	const {logout} = useContext(AuthContext);
 
 	const theme = useTheme();
 	const {mode} = theme.palette;
 	const colorMode = useContext(ColorModeContext);
+
+	const navigate = useNavigate();
 
 	const [anchorEl, setAnchorEl] = useState(null);
 
@@ -43,6 +50,20 @@ function Navbar() {
 	// Closes the avatar menu.
 	const handleMenuClose = () => {
 		setAnchorEl(null);
+	};
+
+	// Logs out a user.
+	const handleClick = async () => {
+		handleMenuClose();
+
+		localStorage.clear('user');
+
+		try {
+			await logout();
+			navigate('/login');
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
@@ -129,7 +150,7 @@ function Navbar() {
 						</MenuItem>
 
 						{/* LOGOUT LINK */}
-						<MenuItem onClick={handleMenuClose}>
+						<MenuItem onClick={handleClick}>
 							<ListItemIcon>
 								<LogoutOutlinedIcon fontSize='small' />
 							</ListItemIcon>
