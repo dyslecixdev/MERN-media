@@ -1,15 +1,3 @@
-// Fake user data.
-export const user = {
-	id: 1,
-	username: 'Dyslecix',
-	email: 'cd@gmail.com',
-	profilePic: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-	desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt architecto pariatur praesentium maiores hic! Atque quod repudiandae officia delectus voluptas eos maxime a assumenda maiores sequi molestias itaque, veniam molestiae!',
-	posts: 5,
-	likes: 7,
-	comments: 3
-};
-
 // Fake friends data.
 export const friends = [
 	{

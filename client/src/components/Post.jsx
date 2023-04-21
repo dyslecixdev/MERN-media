@@ -1,6 +1,6 @@
 // POST
 
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {useMutation, useQueryClient, useQuery} from '@tanstack/react-query';
@@ -9,42 +9,36 @@ import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
-import FormControl from '@mui/material/FormControl';
-import Input from '@mui/material/Input';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Typography from '@mui/material/Typography';
 
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+
+import {AuthContext} from '../contexts/authContext';
 
 import axios from 'axios';
 import moment from 'moment';
 
-import {COMMENT_URL, GET_COMMENT_URL} from '../urls';
+import {LIKE_URL, QUERY_LIKE_URL} from '../urls';
+
+import Comments from './Comments';
 
 function Post({post, grid}) {
-	console.log(post);
+	const {currentUser} = useContext(AuthContext);
 
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
 	const queryClient = useQueryClient();
 
-	const [desc, setDesc] = useState('');
-
 	const [open, setOpen] = useState(null);
 
-	// Fetching this post's comments data.
+	// Fetching this post's likes data.
 	const {isLoading, error, data} = useQuery({
-		queryKey: ['comments', post.id],
+		queryKey: ['likes', post.id],
 		queryFn: () =>
 			axios
-				.get(GET_COMMENT_URL(post.id), {
+				.get(QUERY_LIKE_URL(post.id), {
 					withCredentials: true
 				})
 				.then(res => {
@@ -52,31 +46,39 @@ function Post({post, grid}) {
 				})
 	});
 
-	// Gets all the comments again after mutating existing data.
+	// Gets all the likes again after mutating existing data.
 	const mutation = useMutation({
-		mutationFn: newComment => {
-			return axios.post(COMMENT_URL, newComment, {
-				withCredentials: true
-			});
+		mutationFn: liked => {
+			// Deletes a like if the post has already been liked.
+			if (liked)
+				return axios.delete(QUERY_LIKE_URL(post.id), {
+					withCredentials: true
+				});
+
+			// Creates a like if the post has not been liked yet.
+			return axios.post(
+				LIKE_URL,
+				{postId: post.id},
+				{
+					withCredentials: true
+				}
+			);
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({queryKey: ['comments']});
+			queryClient.invalidateQueries({queryKey: ['likes']});
 		}
 	});
+
+	// Likes or dislikes a post.
+	const handleLike = () => {
+		// Checks to see if the post is liked.
+		mutation.mutate(data.includes(currentUser.id));
+	};
 
 	// Opens or closes a post's comments menu.
 	const handleCommentsToggle = postId => {
 		if (!open) setOpen(postId);
 		else setOpen(null);
-	};
-
-	// Creates a comment.
-	const handleClick = async e => {
-		e.preventDefault();
-
-		mutation.mutate({desc, postId: post.id});
-
-		setDesc('');
 	};
 
 	return (
@@ -129,102 +131,36 @@ function Post({post, grid}) {
 			{/* THIRD ROW */}
 			<Box class='flex gap-[20px] flex-col sm:flex-row'>
 				{/* LIKES BUTTON */}
-				<Button
-					variant={mode === 'dark' ? 'outlined' : 'contained'}
-					color='error'
-					startIcon={<FavoriteBorderOutlinedIcon />}
-				>
-					{/* todo */}
-					{post.likes || 0} Likes
-				</Button>
-
-				{/* COMMENTS BUTTON */}
-				{data && (
+				{error ? (
+					<Typography class='text-red text-playfair text-lg'>
+						Something went wrong!
+					</Typography>
+				) : isLoading ? (
+					<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
+				) : (
 					<Button
+						onClick={handleLike}
 						variant={mode === 'dark' ? 'outlined' : 'contained'}
-						color='success'
-						startIcon={<MessageOutlinedIcon />}
-						onClick={() => handleCommentsToggle(post.id)}
+						color={data.includes(currentUser.id) ? 'error' : 'secondary'}
+						startIcon={<FavoriteBorderOutlinedIcon />}
 					>
-						{data.length} {data.length === 1 ? 'Comment' : 'Comments'}
+						{data.length} {data.length === 1 ? 'Like' : 'Likes'}
 					</Button>
 				)}
+
+				{/* COMMENTS BUTTON */}
+				<Button
+					variant={mode === 'dark' ? 'outlined' : 'contained'}
+					color='success'
+					startIcon={<MessageOutlinedIcon />}
+					onClick={() => handleCommentsToggle(post.id)}
+				>
+					Comments
+				</Button>
 			</Box>
 
-			{/* COMMENTS MENU */}
-			{open === post.id && (
-				<Box
-					class={`flex flex-col p-4 gap-[20px] font-source ${
-						mode === 'dark' ? 'bg-black' : 'bg-white'
-					}`}
-				>
-					{!grid && (
-						<Box class='flex gap-[10px] items-center'>
-							{/* COMMENT INPUT */}
-							<Box
-								class={`border-1 w-full px-4 rounded-full flex items-center ${
-									mode === 'dark' ? 'bg-slate-blue' : 'bg-gray'
-								}`}
-							>
-								<FormControl class='w-full'>
-									<Input
-										value={desc}
-										onChange={e => setDesc(e.target.value)}
-										disableUnderline={true}
-										fullWidth={true}
-									/>
-								</FormControl>
-							</Box>
-
-							{/* POST BUTTON */}
-							<Fab
-								onClick={handleClick}
-								disabled={!desc}
-								size='small'
-								color={mode === 'dark' ? 'secondary' : 'info'}
-							>
-								<SendOutlinedIcon />
-							</Fab>
-						</Box>
-					)}
-
-					{/* COMMENTS CONTAINER */}
-					{error ? (
-						<Typography class='text-red text-playfair text-lg'>
-							Something went wrong!
-						</Typography>
-					) : isLoading ? (
-						<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
-					) : (
-						<List>
-							{data.map(comment => (
-								<ListItem
-									key={comment.id}
-									secondaryAction={
-										<Typography class='font-source'>
-											{moment(comment.createdAt).fromNow()}
-										</Typography>
-									}
-								>
-									{/* COMMENT USER AVATAR */}
-									<ListItemAvatar>
-										<Avatar
-											alt={comment.profilePic}
-											src={comment.profilePic || comment.username[0]}
-										/>
-									</ListItemAvatar>
-
-									{/* COMMENT USERNAME AND COMMENT */}
-									<ListItemText
-										primary={comment.username}
-										secondary={comment.desc}
-									/>
-								</ListItem>
-							))}
-						</List>
-					)}
-				</Box>
-			)}
+			{/* COMMENTS CONTAINER */}
+			<Comments postId={post.id} open={open} grid={grid} />
 		</Box>
 	);
 }

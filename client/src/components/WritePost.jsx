@@ -105,7 +105,7 @@ function WritePost() {
 					mode === 'dark' ? 'bg-slate-blue' : 'bg-gray'
 				}`}
 			>
-				<Typography>Write a Post</Typography>
+				<Typography>What's on your mind?</Typography>
 			</Box>
 
 			{/* POST MODAL */}
@@ -141,6 +141,7 @@ function WritePost() {
 							rows={10}
 							value={message}
 							onChange={e => setMessage(e.target.value)}
+							color='info'
 						/>
 
 						<Box class='flex justify-between items-center px-8'>

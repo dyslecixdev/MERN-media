@@ -7,6 +7,9 @@ export const AUTH_LOGIN_URL = AUTH_URL + '/login';
 export const COMMENT_URL = BASE_URL + '/api/comments';
 export const GET_COMMENT_URL = postId => COMMENT_URL + `?postId=${postId}`;
 
+export const LIKE_URL = BASE_URL + '/api/likes';
+export const QUERY_LIKE_URL = postId => LIKE_URL + `?postId=${postId}`;
+
 export const POST_URL = BASE_URL + '/api/posts';
 
 export const FILE_URL = BASE_URL + '/api/upload';

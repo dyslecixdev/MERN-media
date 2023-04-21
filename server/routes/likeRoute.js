@@ -1,9 +1,10 @@
 import express from 'express';
-import {} from '../controllers/likeController.js';
-// import {protect} from '../middlewares/authMiddleware.js';
+import {createLike, getLikes, deleteLike} from '../controllers/likeController.js';
 
 const router = express.Router();
 
-router.get('');
+router.post('/', createLike);
+router.get('/', getLikes);
+router.delete('/', deleteLike);
 
 export default router;
