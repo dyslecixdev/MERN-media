@@ -8,10 +8,10 @@ dotenv.config();
 
 // Gets the logged in user.
 export const getUser = (req, res) => {
-	const userId = req.params.userId;
+	const {userId} = req.params;
 	const q = 'SELECT * FROM users WHERE id = ?';
 
-	connectDB.query(q, [userId], (err, data) => {
+	return connectDB.query(q, [userId], (err, data) => {
 		if (err) return res.status(500).json(err);
 
 		const {password, ...otherData} = data[0];

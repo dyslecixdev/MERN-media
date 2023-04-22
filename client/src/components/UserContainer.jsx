@@ -31,7 +31,7 @@ import {AuthContext} from '../contexts/authContext';
 
 import axios from 'axios';
 
-import {GET_USER_URL} from '../urls';
+import {GET_USER_URL, QUERY_RELATIONSHIP_URL, RELATIONSHIP_URL} from '../urls';
 
 function UserContainer() {
 	const {currentUser} = useContext(AuthContext);
@@ -48,7 +48,12 @@ function UserContainer() {
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 	// Fetching this user.
-	const {isLoading, error, data} = useQuery({
+	// Since I have two of these fetching functions, I renamed the isLoading, error, and data to avoid confusion.
+	const {
+		isLoading: userIsLoading,
+		error: userError,
+		data: userData
+	} = useQuery({
 		queryKey: ['user', id],
 		queryFn: () =>
 			axios
@@ -58,6 +63,45 @@ function UserContainer() {
 				.then(res => {
 					return res.data;
 				})
+	});
+
+	// Fetching logged in user's relationships.
+	const {
+		isLoading: relationshipIsLoading,
+		error: relationshipError,
+		data: relationshipData
+	} = useQuery({
+		queryKey: ['relationship', id],
+		queryFn: () =>
+			axios
+				.get(QUERY_RELATIONSHIP_URL(id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
+
+	// Gets all the relationships again after mutating existing data.
+	const mutation = useMutation({
+		mutationFn: following => {
+			// Deletes the relationship if it already exists.
+			if (following)
+				return axios.delete(QUERY_RELATIONSHIP_URL(id), {
+					withCredentials: true
+				});
+			// Creates a relationship if it does not exist.
+			return axios.post(
+				RELATIONSHIP_URL,
+				{userId: id},
+				{
+					withCredentials: true
+				}
+			);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({queryKey: ['relationship']});
+		}
 	});
 
 	// Hides or reveals the password.
@@ -72,39 +116,44 @@ function UserContainer() {
 	// Closes the modal.
 	const handleModalClose = () => setOpen(false);
 
+	// Creates or deletes a relationship.
+	const handleAddFriend = () => {
+		mutation.mutate(relationshipData.includes(currentUser.id));
+	};
+
 	return (
 		<Box class='flex flex-col sm:flex-row items-center py-2 md:px-20 lg:px-40 xl:px-80 gap-[20px] md:gap-[40px] font-source'>
 			{/* USER AVATAR */}
-			{error ? (
+			{userError ? (
 				<Typography class='text-red text-playfair text-lg'>
 					Something went wrong!
 				</Typography>
-			) : isLoading ? (
+			) : userIsLoading ? (
 				<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
 			) : (
 				<Avatar
-					alt={data.username}
-					src={data.profilePic || data.username[0]}
+					alt={userData.username}
+					src={userData.profilePic || userData.username[0]}
 					sx={{width: 200, height: 200}}
 				/>
 			)}
 
 			{/* CONTAINER RIGHT OF USER AVATAR */}
-			{error ? (
+			{userError ? (
 				<Typography class='text-red text-playfair text-lg'>
 					Something went wrong!
 				</Typography>
-			) : isLoading ? (
+			) : userIsLoading ? (
 				<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
 			) : (
 				<Box class='flex flex-col gap-[20px]'>
 					{/* TOP PART OF CONTAINER */}
 					<Box class='flex gap-[20px] items-center'>
 						{/* USERNAME */}
-						<Typography class='font-playfair text-3xl'>{data.username}</Typography>
+						<Typography class='font-playfair text-3xl'>{userData.username}</Typography>
 
-						{/* EDIT PROFILE OR ADD FRIEND BUTTON */}
 						{Number(id) === currentUser.id ? (
+							// EDIT PROFILE BUTTON
 							<Button
 								onClick={handleModalOpen}
 								variant={mode === 'dark' ? 'outlined' : 'contained'}
@@ -113,13 +162,25 @@ function UserContainer() {
 							>
 								Edit Profile
 							</Button>
+						) : relationshipError ? (
+							<Typography class='text-red text-playfair text-lg'>
+								Something went wrong!
+							</Typography>
+						) : relationshipIsLoading ? (
+							<Typography class='text-green text-playfair text-lg'>
+								Loading...
+							</Typography>
 						) : (
+							// FOLLOWING OR ADD FRIEND BUTTON
 							<Button
+								onClick={handleAddFriend}
 								variant={mode === 'dark' ? 'outlined' : 'contained'}
 								color='secondary'
 								startIcon={<PersonAddOutlinedIcon />}
 							>
-								Add Friend
+								{relationshipData.includes(currentUser.id)
+									? 'Following Friend'
+									: 'Add Friend'}
 							</Button>
 						)}
 					</Box>
@@ -155,10 +216,10 @@ function UserContainer() {
 					</Box>
 
 					{/* USER'S NAME */}
-					<Typography>{data.name}</Typography>
+					<Typography>{userData.name}</Typography>
 
 					{/* USER DESCRIPTION */}
-					<Typography>{data.desc}</Typography>
+					<Typography>{userData.desc}</Typography>
 				</Box>
 			)}
 

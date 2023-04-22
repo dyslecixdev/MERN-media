@@ -26,10 +26,6 @@ import Logo from '../assets/logo.png';
 import {AuthContext} from '../contexts/authContext';
 import {ColorModeContext} from '../theme';
 
-import axios from 'axios';
-
-import {AUTH_LOGOUT_URL} from '../urls';
-
 function Navbar() {
 	const {currentUser} = useContext(AuthContext);
 	const {logout} = useContext(AuthContext);

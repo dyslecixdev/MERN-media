@@ -13,6 +13,9 @@ export const QUERY_LIKE_URL = postId => LIKE_URL + `?postId=${postId}`;
 
 export const POST_URL = BASE_URL + '/api/posts';
 
+export const RELATIONSHIP_URL = BASE_URL + '/api/relationships';
+export const QUERY_RELATIONSHIP_URL = userId => RELATIONSHIP_URL + `?userId=${userId}`;
+
 export const USER_URL = BASE_URL + '/api/users';
 export const GET_USER_URL = userId => USER_URL + `/${userId}`;
 
