@@ -12,6 +12,7 @@ export const LIKE_URL = BASE_URL + '/api/likes';
 export const QUERY_LIKE_URL = postId => LIKE_URL + `?postId=${postId}`;
 
 export const POST_URL = BASE_URL + '/api/posts';
+export const GET_POST_URL = userId => POST_URL + `?userId=${userId}`;
 
 export const RELATIONSHIP_URL = BASE_URL + '/api/relationships';
 export const QUERY_RELATIONSHIP_URL = userId => RELATIONSHIP_URL + `?userId=${userId}`;

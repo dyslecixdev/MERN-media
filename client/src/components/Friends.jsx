@@ -40,7 +40,7 @@ function Friends() {
 				})
 	});
 
-	console.log(data);
+	// console.log(data);
 
 	return (
 		<Box class='h-full w-full flex flex-col gap-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-blue scrollbar-track-transparent'>
