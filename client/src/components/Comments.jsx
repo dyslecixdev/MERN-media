@@ -96,6 +96,7 @@ function Comments({postId, open, grid}) {
 							disabled={!desc}
 							size='small'
 							color={mode === 'dark' ? 'secondary' : 'info'}
+							sx={{zIndex: 1}}
 						>
 							<SendOutlinedIcon />
 						</Fab>

@@ -1,4 +1,4 @@
-// FRIENDS LIST
+// USERS LIST
 
 import {useContext} from 'react';
 import {Link} from 'react-router-dom';
@@ -18,17 +18,17 @@ import {AuthContext} from '../contexts/authContext';
 
 import axios from 'axios';
 
-import {GET_FOLLOWED_URL} from '../urls';
+import {GET_ALL_USER_URL} from '../urls';
 
-function Friends() {
+function Users() {
 	const {currentUser} = useContext(AuthContext);
 
-	// Fetching logged in user's relationships.
+	// Fetching all the users.
 	const {isLoading, error, data} = useQuery({
-		queryKey: ['relationship', currentUser.id],
+		queryKey: ['users', currentUser.id],
 		queryFn: () =>
 			axios
-				.get(GET_FOLLOWED_URL(currentUser.id), {
+				.get(GET_ALL_USER_URL(currentUser.id), {
 					withCredentials: true
 				})
 				.then(res => {
@@ -39,7 +39,7 @@ function Friends() {
 	return (
 		<Box class='h-full w-full flex flex-col gap-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-blue scrollbar-track-transparent'>
 			{/* TITLE */}
-			<Typography class='font-playfair text-2xl self-center'>Friends</Typography>
+			<Typography class='font-playfair text-2xl self-center'>Users</Typography>
 
 			{/* FRIENDS LIST */}
 			{error ? (
@@ -50,23 +50,19 @@ function Friends() {
 				<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
 			) : (
 				<List>
-					{data.map(friend => (
-						<ListItem key={friend.followedUserId}>
-							<ListItemButton
-								component={Link}
-								to={`/profile/${friend.followedUserId}`}
-							>
+					{data.map(user => (
+						<ListItem key={user.id}>
+							<ListItemButton component={Link} to={`/profile/${user.id}`}>
 								<ListItemAvatar>
 									<Avatar
-										alt={friend.username}
+										alt={user.username}
 										src={
-											process.env.PUBLIC_URL +
-												'/upload/' +
-												friend.profilePic || friend.username[0]
+											process.env.PUBLIC_URL + '/upload/' + user.profilePic ||
+											user.username[0]
 										}
 									/>
 								</ListItemAvatar>
-								<ListItemText primary={friend.username} />
+								<ListItemText primary={user.username} />
 							</ListItemButton>
 						</ListItem>
 					))}
@@ -76,4 +72,4 @@ function Friends() {
 	);
 }
 
-export default Friends;
+export default Users;

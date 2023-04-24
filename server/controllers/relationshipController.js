@@ -37,7 +37,7 @@ export const getFollowerRelationships = (req, res) => {
 export const getFollowedRelationships = (req, res) => {
 	// Gets all the users' username and profilePic.
 	const q =
-		'SELECT r.followedUserId, u.username AS username, profilePic FROM relationships AS r JOIN users AS u ON (u.id = r.followedUserId) WHERE r.followerUserId = 25';
+		'SELECT r.followedUserId, u.username AS username, profilePic FROM relationships AS r JOIN users AS u ON (u.id = r.followedUserId) WHERE r.followerUserId = ? ORDER BY u.username ASC';
 
 	connectDB.query(q, [req.query.userId], (err, data) => {
 		if (err) return res.status(500).json(err);

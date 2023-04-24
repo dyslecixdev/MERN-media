@@ -24,6 +24,7 @@ export const GET_FOLLOWED_URL = userId => RELATIONSHIP_URL + `/followed?userId=$
 export const DELETE_RELATIONSHIP_URL = userId => RELATIONSHIP_URL + `?userId=${userId}`;
 
 export const USER_URL = BASE_URL + '/api/users';
+export const GET_ALL_USER_URL = userId => USER_URL + `/all/${userId}`;
 export const QUERY_USER_URL = userId => USER_URL + `/${userId}`;
 
 export const FILE_URL = BASE_URL + '/api/upload';

@@ -19,6 +19,17 @@ export const getUser = (req, res) => {
 	});
 };
 
+// Gets all the users except the logged in user.
+export const getAllUsers = (req, res) => {
+	const {userId} = req.params;
+	const q = 'SELECT id, username, profilePic FROM users WHERE id <> ? ORDER BY username ASC';
+
+	return connectDB.query(q, [userId], (err, data) => {
+		if (err) return res.status(500).json(err);
+		return res.json(data);
+	});
+};
+
 // Updates the logged in user.
 export const updateUser = (req, res) => {
 	const token = req.cookies.accessToken;
@@ -27,14 +38,17 @@ export const updateUser = (req, res) => {
 	const {username, desc, email, password, confirmPassword, profilePic} = req.body;
 	if (!username || !desc || !email || !password) return res.status(400).json('Fill all fields!');
 	// Note because we are using form data, the data type of every variable is an object.
-	if (JSON.stringify(password) !== JSON.stringify(confirmPassword))
+	const passwordString = JSON.stringify(password);
+	if (passwordString !== JSON.stringify(confirmPassword))
 		return res.status(400).json('Passwords do not match!');
 
 	return jwt.verify(token, process.env.JWT_SECRET, (jwtErr, userInfo) => {
 		if (jwtErr) return res.status(403).json('Token is invalid!');
 
 		const salt = bcrypt.genSaltSync(10);
-		const hashedPassword = bcrypt.hashSync(JSON.stringify(password), salt);
+		// The stringified password contains [""], so we slice to remove the first and last two elements.
+		const passwordStringSlice = passwordString.slice(2, password.length - 3);
+		const hashedPassword = bcrypt.hashSync(passwordStringSlice, salt);
 
 		const q =
 			'UPDATE users SET `username` = ?, `desc` = ?, `email` = ?, `password` = ?, `profilePic` = ? WHERE id = ?';
