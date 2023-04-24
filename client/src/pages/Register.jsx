@@ -7,7 +7,6 @@ import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Fab from '@mui/material/Fab';
 import FilledInput from '@mui/material/FilledInput';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
@@ -19,7 +18,6 @@ import Typography from '@mui/material/Typography';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 
 import DarkLogo from '../assets/logo-text-dark.png';
 import LightLogo from '../assets/logo-text-white.png';
@@ -35,12 +33,10 @@ function Register() {
 	const navigate = useNavigate();
 
 	const [inputs, setInputs] = useState({
-		name: '',
 		username: '',
 		email: '',
 		password: '',
-		confirmPassword: '',
-		profilePic: ''
+		confirmPassword: ''
 	});
 	const [err, setErr] = useState('');
 
@@ -82,19 +78,10 @@ function Register() {
 						src={mode === 'dark' ? DarkLogo : LightLogo}
 						alt='logo'
 						class='h-[150px] w-[200px] object-cover'
-					></Box>
+					/>
 
 					{/* REGISTER FORM */}
 					<Paper component='form' class='flex flex-col bg-transparent gap-[30px]'>
-						{/* NAME INPUT */}
-						<TextField
-							label='Full Name'
-							name='name'
-							onChange={handleChange}
-							variant='filled'
-							color='secondary'
-						/>
-
 						{/* USERNAME INPUT */}
 						<TextField
 							label='Username'
@@ -161,23 +148,15 @@ function Register() {
 							<Typography class='text-red text-playfair text-lg'>{err}</Typography>
 						)}
 
-						<Box class='flex gap-[20px] items-center w-full'>
-							{/* ADD PHOTO BUTTON */}
-							<Fab name='profilePic' onChange={handleChange} color='secondary'>
-								<AddAPhotoOutlinedIcon />
-							</Fab>
-
-							{/* REGISTER BUTTON */}
-							<Button
-								onClick={handleClick}
-								variant='contained'
-								type='submit'
-								color='secondary'
-								sx={{width: '70%'}}
-							>
-								Register
-							</Button>
-						</Box>
+						{/* REGISTER BUTTON */}
+						<Button
+							onClick={handleClick}
+							variant='contained'
+							type='submit'
+							color='secondary'
+						>
+							Register
+						</Button>
 					</Paper>
 
 					{/* TEXT FOR SMALL VIEWPORTS */}

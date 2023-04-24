@@ -8,8 +8,8 @@ dotenv.config();
 
 // Registers a user.
 export const registerUser = (req, res) => {
-	const {name, username, email, password, confirmPassword, profilePic} = req.body;
-	if (!name || !username || !email || !password) return res.status(400).json('Fill all fields!');
+	const {username, email, password, confirmPassword} = req.body;
+	if (!username || !email || !password) return res.status(400).json('Fill all fields!');
 	if (password !== confirmPassword) return res.status(400).json('Passwords do not match!');
 
 	// Using ? provides extra security in queries.
@@ -22,10 +22,9 @@ export const registerUser = (req, res) => {
 		const salt = bcrypt.genSaltSync(10);
 		const hashedPassword = bcrypt.hashSync(password, salt);
 
-		const insertQ =
-			'INSERT INTO users (`name`, `username`,`email`,`password`, `profilePic`) VALUE (?)';
+		const insertQ = 'INSERT INTO users (`username`,`email`,`password`) VALUE (?)';
 		// Array of values must be in the order listed above.
-		const values = [name, username, email, hashedPassword, profilePic];
+		const values = [username, email, hashedPassword];
 
 		// Placing the values directly creates a "Column count doesn't match value count at row 1" error.
 		return connectDB.query(insertQ, [values], insertErr => {

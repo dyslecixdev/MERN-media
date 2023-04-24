@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 
 import connectDB from '../configs/db.js';
@@ -25,15 +26,19 @@ export const updateUser = (req, res) => {
 
 	const {username, desc, email, password, confirmPassword, profilePic} = req.body;
 	if (!username || !desc || !email || !password) return res.status(400).json('Fill all fields!');
+	// Note because we are using form data, the data type of every variable is an object.
 	if (JSON.stringify(password) !== JSON.stringify(confirmPassword))
 		return res.status(400).json('Passwords do not match!');
 
 	return jwt.verify(token, process.env.JWT_SECRET, (jwtErr, userInfo) => {
 		if (jwtErr) return res.status(403).json('Token is invalid!');
 
+		const salt = bcrypt.genSaltSync(10);
+		const hashedPassword = bcrypt.hashSync(JSON.stringify(password), salt);
+
 		const q =
 			'UPDATE users SET `username` = ?, `desc` = ?, `email` = ?, `password` = ?, `profilePic` = ? WHERE id = ?';
-		const values = [username, desc, email, password, profilePic, userInfo.id];
+		const values = [username, desc, email, hashedPassword, profilePic, userInfo.id];
 
 		return connectDB.query(q, values, (err, data) => {
 			if (err) return res.status(500).json(err);
@@ -45,8 +50,4 @@ export const updateUser = (req, res) => {
 			return res.status(403).json('Only the logged in user can update themself!');
 		});
 	});
-};
-
-export const deleteUser = (req, res) => {
-	res.send('Delete');
 };
