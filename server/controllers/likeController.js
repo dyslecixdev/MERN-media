@@ -24,12 +24,22 @@ export const createLike = (req, res) => {
 };
 
 // Gets all the likes for one post.
-export const getLikes = (req, res) => {
+export const getPostLikes = (req, res) => {
 	const q = 'SELECT userId FROM likes WHERE postId = ?';
 
 	connectDB.query(q, [req.query.postId], (err, data) => {
 		if (err) return res.status(500).json(err);
 		return res.status(200).json(data.map(like => like.userId));
+	});
+};
+
+// Gets all the likes for one user.
+export const getUserLikes = (req, res) => {
+	const q = 'SELECT postId FROM likes WHERE userId = ?';
+
+	connectDB.query(q, [req.query.userId], (err, data) => {
+		if (err) return res.status(500).json(err);
+		return res.status(200).json(data);
 	});
 };
 

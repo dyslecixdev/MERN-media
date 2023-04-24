@@ -20,7 +20,7 @@ import {AuthContext} from '../contexts/authContext';
 import axios from 'axios';
 import moment from 'moment';
 
-import {LIKE_URL, QUERY_LIKE_URL, DELETE_POST_URL} from '../urls';
+import {LIKE_URL, POST_LIKE_URL, DELETE_LIKE_URL, DELETE_POST_URL} from '../urls';
 
 import Comments from './Comments';
 
@@ -39,7 +39,7 @@ function Post({post, grid}) {
 		queryKey: ['likes', post.id],
 		queryFn: () =>
 			axios
-				.get(QUERY_LIKE_URL(post.id), {
+				.get(POST_LIKE_URL(post.id), {
 					withCredentials: true
 				})
 				.then(res => {
@@ -52,7 +52,7 @@ function Post({post, grid}) {
 		mutationFn: liked => {
 			// Deletes a like if the post has already been liked.
 			if (liked)
-				return axios.delete(QUERY_LIKE_URL(post.id), {
+				return axios.delete(DELETE_LIKE_URL(post.id), {
 					withCredentials: true
 				});
 

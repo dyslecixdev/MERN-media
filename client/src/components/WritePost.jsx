@@ -2,7 +2,7 @@
 
 import {useContext, useState} from 'react';
 
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -22,7 +22,7 @@ import {AuthContext} from '../contexts/authContext';
 
 import axios from 'axios';
 
-import {POST_URL, FILE_URL} from '../urls';
+import {QUERY_USER_URL, POST_URL, FILE_URL} from '../urls';
 
 function WritePost() {
 	const {currentUser} = useContext(AuthContext);
@@ -36,6 +36,19 @@ function WritePost() {
 	const [picture, setPicture] = useState(null);
 
 	const [open, setOpen] = useState(false);
+
+	// Fetching the logged in user.
+	const {isLoading, error, data} = useQuery({
+		queryKey: ['user', currentUser.id],
+		queryFn: () =>
+			axios
+				.get(QUERY_USER_URL(currentUser.id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
 
 	// Gets all the posts again after mutating existing data (e.g. creating or editing data).
 	const mutation = useMutation({
@@ -93,10 +106,18 @@ function WritePost() {
 			}`}
 		>
 			{/* LOGO */}
-			<Avatar
-				alt={currentUser.username}
-				src={currentUser.profilePic || currentUser.username[0]}
-			/>
+			{error ? (
+				<Typography class='text-red text-playfair text-lg'>
+					Something went wrong!
+				</Typography>
+			) : isLoading ? (
+				<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
+			) : (
+				<Avatar
+					alt={data.username}
+					src={process.env.PUBLIC_URL + '/upload/' + data.profilePic || data.username[0]}
+				/>
+			)}
 
 			{/* FAKE TEXT INPUT */}
 			<Box
@@ -127,13 +148,26 @@ function WritePost() {
 						</Box>
 
 						{/* USERNAME AND AVATAR */}
-						<Box class='flex items-center gap-[20px]'>
-							<Avatar
-								alt={currentUser.username}
-								src={currentUser.profilePic || currentUser.username[0]}
-							/>
-							<Typography>{currentUser.username}</Typography>
-						</Box>
+						{error ? (
+							<Typography class='text-red text-playfair text-lg'>
+								Something went wrong!
+							</Typography>
+						) : isLoading ? (
+							<Typography class='text-green text-playfair text-lg'>
+								Loading...
+							</Typography>
+						) : (
+							<Box class='flex items-center gap-[20px]'>
+								<Avatar
+									alt={data.username}
+									src={
+										process.env.PUBLIC_URL + '/upload/' + data.profilePic ||
+										data.username[0]
+									}
+								/>
+								<Typography>{data.username}</Typography>
+							</Box>
+						)}
 
 						{/* MESSAGE INPUT */}
 						<TextField

@@ -21,7 +21,7 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import axios from 'axios';
 import moment from 'moment';
 
-import {COMMENT_URL, GET_COMMENT_URL} from '../urls';
+import {COMMENT_URL, POST_COMMENT_URL} from '../urls';
 
 function Comments({postId, open, grid}) {
 	const theme = useTheme();
@@ -36,7 +36,7 @@ function Comments({postId, open, grid}) {
 		queryKey: ['comments', postId],
 		queryFn: () =>
 			axios
-				.get(GET_COMMENT_URL(postId), {
+				.get(POST_COMMENT_URL(postId), {
 					withCredentials: true
 				})
 				.then(res => {
@@ -124,8 +124,14 @@ function Comments({postId, open, grid}) {
 								{/* COMMENT USER AVATAR */}
 								<ListItemAvatar>
 									<Avatar
-										alt={comment.profilePic}
-										src={comment.profilePic || comment.username[0]}
+										alt={
+											process.env.PUBLIC_URL + '/upload/' + comment.profilePic
+										}
+										src={
+											process.env.PUBLIC_URL +
+												'/upload/' +
+												comment.profilePic || comment.username[0]
+										}
 									/>
 								</ListItemAvatar>
 

@@ -20,7 +20,14 @@ import EditUserModal from './EditUserModal';
 
 import axios from 'axios';
 
-import {QUERY_USER_URL, QUERY_RELATIONSHIP_URL, RELATIONSHIP_URL} from '../urls';
+import {
+	QUERY_USER_URL,
+	GET_POST_URL,
+	USER_LIKE_URL,
+	USER_COMMENT_URL,
+	QUERY_RELATIONSHIP_URL,
+	RELATIONSHIP_URL
+} from '../urls';
 
 function UserContainer() {
 	const {currentUser} = useContext(AuthContext);
@@ -35,7 +42,7 @@ function UserContainer() {
 	const [open, setOpen] = useState(false);
 
 	// Fetching this user.
-	// Since I have two of these fetching functions, I renamed the isLoading, error, and data to avoid confusion.
+	// Since I have multiple fetching functions, I renamed the isLoading, error, and data to avoid confusion.
 	const {
 		isLoading: userIsLoading,
 		error: userError,
@@ -45,6 +52,57 @@ function UserContainer() {
 		queryFn: () =>
 			axios
 				.get(QUERY_USER_URL(id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
+
+	// Fetching this user's posts.
+	const {
+		isLoading: userPostsIsLoading,
+		error: userPostsError,
+		data: userPostsData
+	} = useQuery({
+		queryKey: ['posts', id],
+		queryFn: () =>
+			axios
+				.get(GET_POST_URL(id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
+
+	// Fetching this user's likes.
+	const {
+		isLoading: userLikesIsLoading,
+		error: userLikesError,
+		data: userLikesData
+	} = useQuery({
+		queryKey: ['likes', id],
+		queryFn: () =>
+			axios
+				.get(USER_LIKE_URL(id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
+
+	// Fetching this user's comments.
+	const {
+		isLoading: userCommentsIsLoading,
+		error: userCommentsError,
+		data: userCommentsData
+	} = useQuery({
+		queryKey: ['comments', id],
+		queryFn: () =>
+			axios
+				.get(USER_COMMENT_URL(id), {
 					withCredentials: true
 				})
 				.then(res => {
@@ -172,31 +230,60 @@ function UserContainer() {
 					{/* BOTTOM PART OF CONTAINER */}
 					<Box class='flex gap-[40px] items-center'>
 						{/* USER POSTS */}
-						<Box class='flex gap-[7px] text-xl items-baseline'>
-							{/* todo */}
-							<Typography class='font-black'>
-								{currentUser.posts || 0}
-							</Typography>{' '}
-							<Typography>posts</Typography>
-						</Box>
+						{userPostsError ? (
+							<Typography class='text-red text-playfair text-lg'>
+								Something went wrong!
+							</Typography>
+						) : userPostsIsLoading ? (
+							<Typography class='text-green text-playfair text-lg'>
+								Loading...
+							</Typography>
+						) : (
+							<Box class='flex gap-[7px] text-xl items-baseline'>
+								<Typography class='font-black'>{userPostsData.length}</Typography>
+								<Typography>
+									{userPostsData.length === 1 ? 'post' : 'posts'}
+								</Typography>
+							</Box>
+						)}
 
 						{/* USER LIKES */}
-						<Box class='flex gap-[7px] text-xl items-baseline'>
-							{/* todo */}
-							<Typography class='font-black'>
-								{currentUser.likes || 0}
-							</Typography>{' '}
-							<Typography>likes</Typography>
-						</Box>
+						{userLikesError ? (
+							<Typography class='text-red text-playfair text-lg'>
+								Something went wrong!
+							</Typography>
+						) : userLikesIsLoading ? (
+							<Typography class='text-green text-playfair text-lg'>
+								Loading...
+							</Typography>
+						) : (
+							<Box class='flex gap-[7px] text-xl items-baseline'>
+								<Typography class='font-black'>{userLikesData.length}</Typography>
+								<Typography>
+									{userLikesData.length === 1 ? 'like' : 'likes'}
+								</Typography>
+							</Box>
+						)}
 
 						{/* USER COMMENTS */}
-						<Box class='flex gap-[7px] text-xl items-baseline'>
-							{/* todo */}
-							<Typography class='font-black'>
-								{currentUser.comments || 0}
-							</Typography>{' '}
-							<Typography>comments</Typography>
-						</Box>
+						{userCommentsError ? (
+							<Typography class='text-red text-playfair text-lg'>
+								Something went wrong!
+							</Typography>
+						) : userCommentsIsLoading ? (
+							<Typography class='text-green text-playfair text-lg'>
+								Loading...
+							</Typography>
+						) : (
+							<Box class='flex gap-[7px] text-xl items-baseline'>
+								<Typography class='font-black'>
+									{userCommentsData.length}
+								</Typography>
+								<Typography>
+									{userCommentsData.length === 1 ? 'comment' : 'comments'}
+								</Typography>
+							</Box>
+						)}
 					</Box>
 
 					{/* USER DESCRIPTION */}

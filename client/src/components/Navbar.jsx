@@ -3,6 +3,8 @@
 import {useContext, useState} from 'react';
 import {Outlet, Link, useNavigate} from 'react-router-dom';
 
+import {useQuery} from '@tanstack/react-query';
+
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -13,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 import SearchIcon from '@mui/icons-material/Search';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
@@ -26,6 +29,10 @@ import Logo from '../assets/logo.png';
 import {AuthContext} from '../contexts/authContext';
 import {ColorModeContext} from '../theme';
 
+import axios from 'axios';
+
+import {QUERY_USER_URL} from '../urls';
+
 function Navbar() {
 	const {currentUser} = useContext(AuthContext);
 	const {logout} = useContext(AuthContext);
@@ -37,6 +44,19 @@ function Navbar() {
 	const navigate = useNavigate();
 
 	const [anchorEl, setAnchorEl] = useState(null);
+
+	// Fetching the logged in user.
+	const {isLoading, error, data} = useQuery({
+		queryKey: ['user', currentUser.id],
+		queryFn: () =>
+			axios
+				.get(QUERY_USER_URL(currentUser.id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
 
 	// Opens the avatar menu.
 	const handleMenuOpen = e => {
@@ -110,13 +130,26 @@ function Navbar() {
 					</IconButton>
 
 					{/* USER AVATAR */}
-					<IconButton onClick={handleMenuOpen}>
-						<Avatar
-							alt={currentUser.username}
-							src={currentUser.profilePic || currentUser.username[0]}
-							sx={{border: mode === 'dark' ? '2px solid white' : '2px solid black'}}
-						/>
-					</IconButton>
+					{error ? (
+						<Typography class='text-red text-playfair text-lg'>
+							Something went wrong!
+						</Typography>
+					) : isLoading ? (
+						<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
+					) : (
+						<IconButton onClick={handleMenuOpen}>
+							<Avatar
+								alt={data.username}
+								src={
+									process.env.PUBLIC_URL + '/upload/' + data.profilePic ||
+									data.username[0]
+								}
+								sx={{
+									border: mode === 'dark' ? '2px solid white' : '2px solid black'
+								}}
+							/>
+						</IconButton>
+					)}
 
 					{/* AVATAR MENU */}
 					<Menu

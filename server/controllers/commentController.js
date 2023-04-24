@@ -30,10 +30,20 @@ export const createComment = (req, res) => {
 };
 
 // Gets all the comments for one post.
-export const getComments = (req, res) => {
+export const getPostComments = (req, res) => {
 	const q = `SELECT c.*, u.id AS userId, username, profilePic FROM comments AS c JOIN users AS u ON (u.id = c.userId) WHERE c.postId = ? ORDER BY c.createdAt DESC`;
 
-	return connectDB.query(q, [req.query.postId], (err, data) => {
+	connectDB.query(q, [req.query.postId], (err, data) => {
+		if (err) return res.status(500).json(err);
+		return res.status(200).json(data);
+	});
+};
+
+// Gets all the comments for one user.
+export const getUserComments = (req, res) => {
+	const q = `SELECT * FROM comments WHERE userId = ?`;
+
+	connectDB.query(q, [req.query.userId], (err, data) => {
 		if (err) return res.status(500).json(err);
 		return res.status(200).json(data);
 	});
