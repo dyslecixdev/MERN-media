@@ -37,21 +37,6 @@ function WritePost() {
 
 	const [open, setOpen] = useState(false);
 
-	// Uploads a post's image.
-	const upload = async () => {
-		try {
-			const formData = new FormData();
-			formData.append('picture', picture);
-			// Note the below route is in server/index.js
-			const res = await axios.post(FILE_URL, formData, {
-				withCredentials: true
-			});
-			return res.data;
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 	// Gets all the posts again after mutating existing data (e.g. creating or editing data).
 	const mutation = useMutation({
 		mutationFn: newPost => {
@@ -63,6 +48,21 @@ function WritePost() {
 			queryClient.invalidateQueries({queryKey: ['posts']});
 		}
 	});
+
+	// Uploads a post's image.
+	const upload = async () => {
+		try {
+			const formData = new FormData();
+			formData.append('file', picture);
+			// Note the below route is in server/index.js
+			const res = await axios.post(FILE_URL, formData, {
+				withCredentials: true
+			});
+			return res.data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	// Opens the modal.
 	const handleModalOpen = () => setOpen(true);

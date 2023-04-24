@@ -114,6 +114,7 @@ function Comments({postId, open, grid}) {
 						{data.map(comment => (
 							<ListItem
 								key={comment.id}
+								// bug Moment text overlaps message text.
 								secondaryAction={
 									<Typography class='font-source'>
 										{moment(comment.createdAt).fromNow()}

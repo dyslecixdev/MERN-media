@@ -43,7 +43,7 @@ export const getPosts = (req, res) => {
 
 		const q = userId
 			? // Selects all the user's posts, and the user's id, username, and profile picture.
-			  `SELECT p.*, u.id As userId, username, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = ?`
+			  `SELECT p.*, u.id As userId, username, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = ? ORDER BY p.createdAt DESC`
 			: // Selects all of the user's and friends' posts, and the user's id, username, and profile picture that created each post.
 			  `SELECT p.*, u.id As userId, username, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) LEFT JOIN relationships AS r ON (p.userId = r.followedUserId) WHERE r.followerUserId = ? OR p.userId = ? ORDER BY p.createdAt DESC`;
 		const values = userId ? [userId] : [userInfo.id, userInfo.id];
