@@ -15,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -108,9 +109,11 @@ function Navbar() {
 							<Input
 								disableUnderline={true}
 								endAdornment={
-									<IconButton>
-										<SearchIcon />
-									</IconButton>
+									<Tooltip title='Not functional' placement='right'>
+										<IconButton>
+											<SearchIcon />
+										</IconButton>
+									</Tooltip>
 								}
 							/>
 						</FormControl>

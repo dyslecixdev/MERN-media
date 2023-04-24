@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
@@ -180,9 +181,11 @@ function WritePost() {
 
 						<Box class='flex justify-between items-center px-8'>
 							{/* EMOJI BUTTON */}
-							<IconButton>
-								<EmojiEmotionsOutlinedIcon />
-							</IconButton>
+							<Tooltip title='Not functional' placement='bottom'>
+								<IconButton>
+									<EmojiEmotionsOutlinedIcon />
+								</IconButton>
+							</Tooltip>
 
 							{/* PICTURE BUTTON */}
 							<IconButton component='label' htmlFor='picture'>
@@ -203,9 +206,11 @@ function WritePost() {
 							</IconButton>
 
 							{/* VIDEO BUTTON */}
-							<IconButton>
-								<OndemandVideoOutlinedIcon />
-							</IconButton>
+							<Tooltip title='Not functional' placement='bottom'>
+								<IconButton>
+									<OndemandVideoOutlinedIcon />
+								</IconButton>
+							</Tooltip>
 
 							{/* POST BUTTON */}
 							<Button

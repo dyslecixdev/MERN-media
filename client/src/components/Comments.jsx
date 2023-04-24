@@ -21,28 +21,15 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import axios from 'axios';
 import moment from 'moment';
 
-import {COMMENT_URL, POST_COMMENT_URL} from '../urls';
+import {COMMENT_URL} from '../urls';
 
-function Comments({postId, open, grid}) {
+function Comments({postId, isLoading, error, data, open, grid}) {
 	const theme = useTheme();
 	const {mode} = theme.palette;
 
 	const queryClient = useQueryClient();
 
 	const [desc, setDesc] = useState('');
-
-	// Fetching this post's comments data.
-	const {isLoading, error, data} = useQuery({
-		queryKey: ['comments', postId],
-		queryFn: () =>
-			axios
-				.get(POST_COMMENT_URL(postId), {
-					withCredentials: true
-				})
-				.then(res => {
-					return res.data;
-				})
-	});
 
 	// Gets all the comments again after mutating existing data.
 	const mutation = useMutation({
@@ -113,15 +100,7 @@ function Comments({postId, open, grid}) {
 				) : (
 					<List>
 						{data.map(comment => (
-							<ListItem
-								key={comment.id}
-								// bug Moment text overlaps message text.
-								secondaryAction={
-									<Typography class='font-source'>
-										{moment(comment.createdAt).fromNow()}
-									</Typography>
-								}
-							>
+							<ListItem key={comment.id}>
 								{/* COMMENT USER AVATAR */}
 								<ListItemAvatar>
 									<Avatar
@@ -136,8 +115,15 @@ function Comments({postId, open, grid}) {
 									/>
 								</ListItemAvatar>
 
-								{/* COMMENT USERNAME AND COMMENT */}
-								<ListItemText primary={comment.username} secondary={comment.desc} />
+								{/* COMMENT USERNAME, TIME, AND COMMENT */}
+								<ListItemText
+									primary={
+										comment.username +
+										' | ' +
+										moment(comment.createdAt).fromNow()
+									}
+									secondary={comment.desc}
+								/>
 							</ListItem>
 						))}
 					</List>

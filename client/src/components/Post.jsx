@@ -20,7 +20,7 @@ import {AuthContext} from '../contexts/authContext';
 import axios from 'axios';
 import moment from 'moment';
 
-import {LIKE_URL, POST_LIKE_URL, DELETE_LIKE_URL, DELETE_POST_URL} from '../urls';
+import {LIKE_URL, POST_LIKE_URL, DELETE_LIKE_URL, POST_COMMENT_URL, DELETE_POST_URL} from '../urls';
 
 import Comments from './Comments';
 
@@ -35,7 +35,11 @@ function Post({post, grid}) {
 	const [open, setOpen] = useState(null);
 
 	// Fetching this post's likes data.
-	const {isLoading, error, data} = useQuery({
+	const {
+		isLoading: likesIsLoading,
+		error: likesError,
+		data: likesData
+	} = useQuery({
 		queryKey: ['likes', post.id],
 		queryFn: () =>
 			axios
@@ -70,6 +74,23 @@ function Post({post, grid}) {
 		}
 	});
 
+	// Fetching this post's comments data.
+	const {
+		isLoading: commentsIsLoading,
+		error: commentsError,
+		data: commentsData
+	} = useQuery({
+		queryKey: ['comments', post.id],
+		queryFn: () =>
+			axios
+				.get(POST_COMMENT_URL(post.id), {
+					withCredentials: true
+				})
+				.then(res => {
+					return res.data;
+				})
+	});
+
 	// Gets all the posts again after mutating existing data.
 	const deletePostMutation = useMutation({
 		mutationFn: postId => {
@@ -85,7 +106,7 @@ function Post({post, grid}) {
 	// Likes or dislikes a post.
 	const handleLike = () => {
 		// Checks to see if the post is liked.
-		getLikeMutation.mutate(data.includes(currentUser.id));
+		getLikeMutation.mutate(likesData.includes(currentUser.id));
 	};
 
 	// Opens or closes a post's comments menu.
@@ -150,32 +171,40 @@ function Post({post, grid}) {
 			{/* THIRD ROW */}
 			<Box class='flex gap-[20px] flex-col sm:flex-row'>
 				{/* LIKES BUTTON */}
-				{error ? (
+				{likesError ? (
 					<Typography class='text-red text-playfair text-lg'>
 						Something went wrong!
 					</Typography>
-				) : isLoading ? (
+				) : likesIsLoading ? (
 					<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
 				) : (
 					<Button
 						onClick={handleLike}
 						variant={mode === 'dark' ? 'outlined' : 'contained'}
-						color={data.includes(currentUser.id) ? 'error' : 'secondary'}
+						color={likesData.includes(currentUser.id) ? 'error' : 'secondary'}
 						startIcon={<FavoriteBorderOutlinedIcon />}
 					>
-						{data.length} {data.length === 1 ? 'Like' : 'Likes'}
+						{likesData.length} {likesData.length === 1 ? 'Like' : 'Likes'}
 					</Button>
 				)}
 
 				{/* COMMENTS BUTTON */}
-				<Button
-					variant={mode === 'dark' ? 'outlined' : 'contained'}
-					color='success'
-					startIcon={<MessageOutlinedIcon />}
-					onClick={() => handleCommentsToggle(post.id)}
-				>
-					Comments
-				</Button>
+				{commentsError ? (
+					<Typography class='text-red text-playfair text-lg'>
+						Something went wrong!
+					</Typography>
+				) : commentsIsLoading ? (
+					<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
+				) : (
+					<Button
+						variant={mode === 'dark' ? 'outlined' : 'contained'}
+						color='success'
+						startIcon={<MessageOutlinedIcon />}
+						onClick={() => handleCommentsToggle(post.id)}
+					>
+						{commentsData.length} {commentsData.length === 1 ? 'Comment' : 'Comments'}
+					</Button>
+				)}
 			</Box>
 
 			{/* DELETE BUTTON */}
@@ -191,7 +220,14 @@ function Post({post, grid}) {
 			)}
 
 			{/* COMMENTS CONTAINER */}
-			<Comments postId={post.id} open={open} grid={grid} />
+			<Comments
+				postId={post.id}
+				isLoading={commentsIsLoading}
+				error={commentsError}
+				data={commentsData}
+				open={open}
+				grid={grid}
+			/>
 		</Box>
 	);
 }
