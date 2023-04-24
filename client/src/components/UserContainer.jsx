@@ -25,7 +25,8 @@ import {
 	GET_POST_URL,
 	USER_LIKE_URL,
 	USER_COMMENT_URL,
-	QUERY_RELATIONSHIP_URL,
+	GET_FOLLOWER_URL,
+	DELETE_RELATIONSHIP_URL,
 	RELATIONSHIP_URL
 } from '../urls';
 
@@ -110,7 +111,7 @@ function UserContainer() {
 				})
 	});
 
-	// Fetching logged in user's relationships.
+	// Fetching the users following the logged in user.
 	const {
 		isLoading: relationshipIsLoading,
 		error: relationshipError,
@@ -119,7 +120,7 @@ function UserContainer() {
 		queryKey: ['relationship', id],
 		queryFn: () =>
 			axios
-				.get(QUERY_RELATIONSHIP_URL(id), {
+				.get(GET_FOLLOWER_URL(id), {
 					withCredentials: true
 				})
 				.then(res => {
@@ -132,7 +133,7 @@ function UserContainer() {
 		mutationFn: following => {
 			// Deletes the relationship if it already exists.
 			if (following)
-				return axios.delete(QUERY_RELATIONSHIP_URL(id), {
+				return axios.delete(DELETE_RELATIONSHIP_URL(id), {
 					withCredentials: true
 				});
 			// Creates a relationship if it does not exist.

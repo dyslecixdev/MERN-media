@@ -19,7 +19,9 @@ export const GET_POST_URL = userId => POST_URL + `?userId=${userId}`;
 export const DELETE_POST_URL = postId => POST_URL + `/${postId}`;
 
 export const RELATIONSHIP_URL = BASE_URL + '/api/relationships';
-export const QUERY_RELATIONSHIP_URL = userId => RELATIONSHIP_URL + `?userId=${userId}`;
+export const GET_FOLLOWER_URL = userId => RELATIONSHIP_URL + `/follower?userId=${userId}`;
+export const GET_FOLLOWED_URL = userId => RELATIONSHIP_URL + `/followed?userId=${userId}`;
+export const DELETE_RELATIONSHIP_URL = userId => RELATIONSHIP_URL + `?userId=${userId}`;
 
 export const USER_URL = BASE_URL + '/api/users';
 export const QUERY_USER_URL = userId => USER_URL + `/${userId}`;

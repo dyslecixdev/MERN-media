@@ -23,13 +23,25 @@ export const createRelationship = (req, res) => {
 	});
 };
 
-// Gets all the relationships for the logged in user.
-export const getRelationships = (req, res) => {
+// Gets all the users following the logged in user.
+export const getFollowerRelationships = (req, res) => {
 	const q = 'SELECT followerUserId FROM relationships WHERE followedUserId = ?';
 
 	connectDB.query(q, [req.query.userId], (err, data) => {
 		if (err) return res.status(500).json(err);
 		return res.status(200).json(data.map(relationship => relationship.followerUserId));
+	});
+};
+
+// Gets all the users followed by the logged in user.
+export const getFollowedRelationships = (req, res) => {
+	// Gets all the users' username and profilePic.
+	const q =
+		'SELECT r.followedUserId, u.username AS username, profilePic FROM relationships AS r JOIN users AS u ON (u.id = r.followedUserId) WHERE r.followerUserId = 25';
+
+	connectDB.query(q, [req.query.userId], (err, data) => {
+		if (err) return res.status(500).json(err);
+		return res.status(200).json(data);
 	});
 };
 

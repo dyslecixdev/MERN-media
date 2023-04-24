@@ -3,7 +3,7 @@
 import {useContext} from 'react';
 import {Link} from 'react-router-dom';
 
-import {useMutation, useQueryClient, useQuery} from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -18,21 +18,19 @@ import {AuthContext} from '../contexts/authContext';
 
 import axios from 'axios';
 
-import {QUERY_RELATIONSHIP_URL} from '../urls';
+import {GET_FOLLOWED_URL} from '../urls';
 
 import {friends} from '../data';
 
 function Friends() {
 	const {currentUser} = useContext(AuthContext);
 
-	const queryClient = useQueryClient();
-
-	// todo Fetching logged in user's relationships.
+	// Fetching logged in user's relationships.
 	const {isLoading, error, data} = useQuery({
 		queryKey: ['relationship', currentUser.id],
 		queryFn: () =>
 			axios
-				.get(QUERY_RELATIONSHIP_URL(currentUser.id), {
+				.get(GET_FOLLOWED_URL(currentUser.id), {
 					withCredentials: true
 				})
 				.then(res => {
@@ -40,7 +38,7 @@ function Friends() {
 				})
 	});
 
-	// console.log(data);
+	console.log(data);
 
 	return (
 		<Box class='h-full w-full flex flex-col gap-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-blue scrollbar-track-transparent'>
@@ -48,21 +46,36 @@ function Friends() {
 			<Typography class='font-playfair text-2xl self-center'>Friends</Typography>
 
 			{/* FRIENDS LIST */}
-			<List>
-				{friends.map(friend => (
-					<ListItem key={friend.id}>
-						<ListItemButton component={Link} to={`/profile/${friend.id}`}>
-							<ListItemAvatar>
-								<Avatar
-									alt={friend.username}
-									src={friend.profilePic || friend.username[0]}
-								/>
-							</ListItemAvatar>
-							<ListItemText primary={friend.username} />
-						</ListItemButton>
-					</ListItem>
-				))}
-			</List>
+			{error ? (
+				<Typography class='text-red text-playfair text-lg'>
+					Something went wrong!
+				</Typography>
+			) : isLoading ? (
+				<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
+			) : (
+				<List>
+					{data.map(friend => (
+						<ListItem key={friend.followedUserId}>
+							<ListItemButton
+								component={Link}
+								to={`/profile/${friend.followedUserId}`}
+							>
+								<ListItemAvatar>
+									<Avatar
+										alt={friend.username}
+										src={
+											process.env.PUBLIC_URL +
+												'/upload/' +
+												friend.profilePic || friend.username[0]
+										}
+									/>
+								</ListItemAvatar>
+								<ListItemText primary={friend.username} />
+							</ListItemButton>
+						</ListItem>
+					))}
+				</List>
+			)}
 		</Box>
 	);
 }
