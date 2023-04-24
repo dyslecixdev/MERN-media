@@ -13,13 +13,14 @@ import Typography from '@mui/material/Typography';
 
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 import {AuthContext} from '../contexts/authContext';
 
 import axios from 'axios';
 import moment from 'moment';
 
-import {LIKE_URL, QUERY_LIKE_URL} from '../urls';
+import {LIKE_URL, QUERY_LIKE_URL, DELETE_POST_URL} from '../urls';
 
 import Comments from './Comments';
 
@@ -47,7 +48,7 @@ function Post({post, grid}) {
 	});
 
 	// Gets all the likes again after mutating existing data.
-	const mutation = useMutation({
+	const getLikeMutation = useMutation({
 		mutationFn: liked => {
 			// Deletes a like if the post has already been liked.
 			if (liked)
@@ -69,16 +70,33 @@ function Post({post, grid}) {
 		}
 	});
 
+	// Gets all the posts again after mutating existing data.
+	const deletePostMutation = useMutation({
+		mutationFn: postId => {
+			return axios.delete(DELETE_POST_URL(postId), {
+				withCredentials: true
+			});
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({queryKey: ['posts']});
+		}
+	});
+
 	// Likes or dislikes a post.
 	const handleLike = () => {
 		// Checks to see if the post is liked.
-		mutation.mutate(data.includes(currentUser.id));
+		getLikeMutation.mutate(data.includes(currentUser.id));
 	};
 
 	// Opens or closes a post's comments menu.
 	const handleCommentsToggle = postId => {
 		if (!open) setOpen(postId);
 		else setOpen(null);
+	};
+
+	// Deletes a post.
+	const handleClick = () => {
+		deletePostMutation.mutate(post.id);
 	};
 
 	return (
@@ -91,7 +109,13 @@ function Post({post, grid}) {
 			<Box class='flex justify-between items-center'>
 				<Box class='flex gap-[20px] items-center'>
 					{/* POST USER AVATAR */}
-					<Avatar alt={post.username} src={post.profilePic || post.username[0]} />
+					<Avatar
+						alt={post.username}
+						src={
+							process.env.PUBLIC_URL + '/upload/' + post.profilePic ||
+							post.username[0]
+						}
+					/>
 
 					{/* POST USERNAME */}
 					<Typography
@@ -121,11 +145,6 @@ function Post({post, grid}) {
 						class='h-full w-full'
 					/>
 				)}
-
-				{/* POST VIDEO */}
-				{/* {post.video && (
-					<Box component='iframe' src={post.video} class='h-content w-content' />
-				)} */}
 			</Box>
 
 			{/* THIRD ROW */}
@@ -158,6 +177,18 @@ function Post({post, grid}) {
 					Comments
 				</Button>
 			</Box>
+
+			{/* DELETE BUTTON */}
+			{grid && post.userId === currentUser.id && (
+				<Button
+					variant={mode === 'dark' ? 'outlined' : 'contained'}
+					color='info'
+					startIcon={<DeleteOutlineOutlinedIcon />}
+					onClick={handleClick}
+				>
+					Delete
+				</Button>
+			)}
 
 			{/* COMMENTS CONTAINER */}
 			<Comments postId={post.id} open={open} grid={grid} />

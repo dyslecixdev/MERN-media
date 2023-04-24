@@ -114,7 +114,10 @@ function UserContainer() {
 			) : (
 				<Avatar
 					alt={userData.username}
-					src={userData.profilePic || userData.username[0]}
+					src={
+						process.env.PUBLIC_URL + '/upload/' + userData.profilePic ||
+						userData.username[0]
+					}
 					sx={{width: 200, height: 200}}
 				/>
 			)}
