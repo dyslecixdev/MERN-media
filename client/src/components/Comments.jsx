@@ -2,11 +2,12 @@
 
 import {useState} from 'react';
 
-import {useMutation, useQueryClient, useQuery} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 
 import {useTheme} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
@@ -31,6 +32,8 @@ function Comments({postId, isLoading, error, data, open, grid}) {
 
 	const [desc, setDesc] = useState('');
 
+	const [numComments, setNumComments] = useState(1);
+
 	// Gets all the comments again after mutating existing data.
 	const mutation = useMutation({
 		mutationFn: newComment => {
@@ -42,6 +45,11 @@ function Comments({postId, isLoading, error, data, open, grid}) {
 			queryClient.invalidateQueries({queryKey: ['comments']});
 		}
 	});
+
+	// Increments the number of comments to be displayed by 2.
+	const handleNumCommentsIncrement = () => {
+		setNumComments(prevNumComments => prevNumComments + 2);
+	};
 
 	// Creates a comment.
 	const handleClick = async e => {
@@ -99,14 +107,12 @@ function Comments({postId, isLoading, error, data, open, grid}) {
 					<Typography class='text-green text-playfair text-lg'>Loading...</Typography>
 				) : (
 					<List>
-						{data.map(comment => (
+						{data.slice(0, numComments).map(comment => (
 							<ListItem key={comment.id}>
 								{/* COMMENT USER AVATAR */}
 								<ListItemAvatar>
 									<Avatar
-										alt={
-											process.env.PUBLIC_URL + '/upload/' + comment.profilePic
-										}
+										alt={comment.username[0]}
 										src={
 											process.env.PUBLIC_URL +
 												'/upload/' +
@@ -127,6 +133,17 @@ function Comments({postId, isLoading, error, data, open, grid}) {
 							</ListItem>
 						))}
 					</List>
+				)}
+
+				{/* LOAD MORE BUTTON */}
+				{data && numComments < Object.keys(data).length && (
+					<Button
+						onClick={handleNumCommentsIncrement}
+						variant='contained'
+						color='secondary'
+					>
+						<Typography class='font-source font-3xl'>Load More</Typography>
+					</Button>
 				)}
 			</Box>
 		)
