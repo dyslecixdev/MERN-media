@@ -20,7 +20,7 @@ import axios from 'axios';
 
 import {GET_FOLLOWED_URL} from '../urls';
 
-function Friends() {
+function Friends({chat = false}) {
 	const {currentUser} = useContext(AuthContext);
 
 	// Fetching logged in user's relationships.

@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
 	content: ['./src/**/*.{html,js,jsx}'], // Configured to all html, js, and jsx files in the src folder.
 	mode: 'jit', // Enables just-in-time for performance.
@@ -42,6 +45,11 @@ module.exports = {
 				7: '7 7 0%',
 				8: '8 8 0%',
 				9: '9 9 0%'
+			},
+			// XS screen breakpoint.
+			screens: {
+				xs: '375px',
+				...defaultTheme.screens
 			}
 		}
 	},
